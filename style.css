@@ -71,6 +71,16 @@ header {
 .nav-links a { color: var(--muted); }
 .nav-links a:hover { color: var(--text); text-decoration: none; }
 
+.lang-toggle {
+  color: var(--muted) !important;
+  font-size: 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 2px 8px;
+  transition: border-color 0.2s, color 0.2s;
+}
+.lang-toggle:hover { border-color: rgba(255,255,255,0.25); color: var(--text) !important; }
+
 /* ===== Hero ===== */
 .hero {
   text-align: center;
