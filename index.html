@@ -23,7 +23,8 @@
       Stellars Lab
     </div>
     <ul class="nav-links">
-      <li><a href="#products">プロダクト</a></li>
+      <li><a href="#products">Products</a></li>
+      <li><a href="#tools">Tools</a></li>
       <li><a href="#about">About</a></li>
       <li><a href="privacy.html">プライバシーポリシー</a></li>
       <li><a href="terms.html">利用規約</a></li>
@@ -42,36 +43,51 @@
 <section class="section" id="products">
   <p class="section-label">Products</p>
   <h2>プロダクト</h2>
-  <div class="products">
+
+  <!-- Polaris — featured -->
+  <div class="product-card polaris product-featured">
+    <div class="product-featured-inner">
+      <div>
+        <div class="product-icon">🌟</div>
+        <span class="badge badge-paid">Premium 300円/月</span>
+        <h3>Polaris</h3>
+        <p>漠然とした夢をAIとの対話でロードマップと具体的アクションに落とし込み、毎日チェックするだけで前進できる目標管理PWA。</p>
+      </div>
+      <div>
+        <ul class="features">
+          <li>AIが中期目標とアクションを自動生成</li>
+          <li>進捗バーでモチベーション維持</li>
+          <li>月次レビューレポートを自動作成</li>
+          <li>ホーム画面追加対応（PWA）</li>
+        </ul>
+        <a href="https://polaris-nu-flame.vercel.app" target="_blank" rel="noopener" class="product-link indigo">アプリを開く →</a>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ===== Tools ===== -->
+<section class="section" id="tools">
+  <p class="section-label">Tools</p>
+  <h2>ツール</h2>
+  <p class="section-desc">小さく、速く、ただその一点だけを解決する。</p>
+
+  <div class="tools-list">
 
     <!-- Notipop -->
-    <div class="product-card notipop">
-      <div class="product-icon">📌</div>
-      <span class="badge badge-free">Free</span>
-      <h3>Notipop</h3>
-      <p>ブラウザで気になったテキストをワンクリックでNotionに保存できるChrome拡張。スクラップ・メモ・ブックマークをそのままNotionのデータベースへ。</p>
-      <ul class="features">
-        <li>選択テキストをその場でNotionへ送信</li>
-        <li>ページタイトル・URLを自動付与</li>
-        <li>H1〜H4・太字のMarkdown対応</li>
-        <li>Ctrl+Shift+M ショートカット対応</li>
-      </ul>
-      <a href="#" class="product-link gold">近日公開 →</a>
-    </div>
-
-    <!-- Polaris -->
-    <div class="product-card polaris">
-      <div class="product-icon">🌟</div>
-      <span class="badge badge-paid">Premium 300円/月</span>
-      <h3>Polaris</h3>
-      <p>漠然とした夢をAIとの対話でロードマップと具体的アクションに落とし込み、毎日チェックするだけで前進できる目標管理PWA。</p>
-      <ul class="features">
-        <li>AIが中期目標とアクションを自動生成</li>
-        <li>進捗バーでモチベーション維持</li>
-        <li>月次レビューレポートを自動作成</li>
-        <li>ホーム画面追加対応（PWA）</li>
-      </ul>
-      <a href="https://polaris-nu-flame.vercel.app" target="_blank" rel="noopener" class="product-link indigo">アプリを開く →</a>
+    <div class="tool-card">
+      <div class="tool-left">
+        <span class="tool-icon">📌</span>
+        <div>
+          <div class="tool-name">Notipop</div>
+          <div class="tool-desc">ブラウザで選択したテキストをワンクリックでNotionへ保存するChrome拡張。</div>
+        </div>
+      </div>
+      <div class="tool-right">
+        <span class="badge badge-free">Free</span>
+        <a href="#" class="tool-link">近日公開 →</a>
+      </div>
     </div>
 
   </div>

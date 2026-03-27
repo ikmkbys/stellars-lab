@@ -332,6 +332,91 @@ footer {
   font-size: 13px;
 }
 
+/* ===== Product Featured ===== */
+.product-featured {
+  margin-bottom: 0;
+}
+
+.product-featured-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+@media (max-width: 640px) {
+  .product-featured-inner { grid-template-columns: 1fr; gap: 20px; }
+}
+
+/* ===== Section desc ===== */
+.section-desc {
+  color: var(--muted);
+  font-size: 14px;
+  margin-top: -28px;
+  margin-bottom: 28px;
+}
+
+/* ===== Tools List ===== */
+.tools-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tool-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  transition: border-color 0.2s;
+}
+
+.tool-card:hover { border-color: rgba(255,255,255,0.15); }
+
+.tool-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.tool-icon {
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.tool-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 3px;
+}
+
+.tool-desc {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.tool-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-shrink: 0;
+}
+
+.tool-link {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gold);
+  white-space: nowrap;
+}
+
+.tool-link:hover { text-decoration: underline; }
+
 /* ===== Legal Pages ===== */
 .legal {
   max-width: 720px;
