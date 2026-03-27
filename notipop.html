@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notipop — はじめかた</title>
+  <meta name="description" content="Notipop のセットアップ手順。インストールから Notion 連携・使い方まで。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* ===== Steps ===== */
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 32px;
+    }
+
+    .step {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 32px;
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+    }
+
+    .step-num {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--gold-soft);
+      border: 1px solid rgba(201,168,76,0.3);
+      color: var(--gold);
+      font-size: 15px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .step-body h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .step-body p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.75;
+      margin-bottom: 12px;
+    }
+
+    .step-body p:last-child { margin-bottom: 0; }
+
+    .step-body .note {
+      font-size: 12px;
+      color: var(--gold);
+      background: var(--gold-soft);
+      border: 1px solid rgba(201,168,76,0.25);
+      border-radius: 6px;
+      padding: 8px 12px;
+      display: inline-block;
+      margin-top: 4px;
+    }
+
+    .step-img {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      margin-top: 12px;
+      font-size: 13px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    /* ===== CTA button ===== */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--gold);
+      color: #08080f;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 11px 22px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .btn-primary:hover { opacity: 0.85; text-decoration: none; }
+    .btn-primary.disabled {
+      background: var(--bg3);
+      color: var(--muted);
+      border: 1px solid var(--border);
+      cursor: default;
+      pointer-events: none;
+    }
+
+    /* ===== Shortcut ===== */
+    kbd {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: 2px 8px;
+      font-size: 12px;
+      font-family: monospace;
+      color: var(--text);
+    }
+
+    /* ===== Hero sub ===== */
+    .page-hero {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 60px 24px 0;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .page-hero-icon {
+      font-size: 40px;
+    }
+
+    .page-hero h1 {
+      font-size: 28px;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .page-hero p {
+      font-size: 14px;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== Header ===== -->
+<header>
+  <nav class="nav">
+    <a class="nav-logo" href="index.html" style="text-decoration:none;">
+      <span class="star">✦</span>
+      Stellars Lab
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html#products">Products</a></li>
+      <li><a href="index.html#tools">Tools</a></li>
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="/en/notipop" class="lang-toggle">🇺🇸 EN</a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- ===== Page Hero ===== -->
+<div class="page-hero">
+  <div class="page-hero-icon">📌</div>
+  <div>
+    <h1>Notipop のはじめかた</h1>
+    <p>インストールから Notion 連携・使い方まで、5分でセットアップ完了。</p>
+  </div>
+</div>
+
+<!-- ===== Steps ===== -->
+<section class="section">
+  <div class="steps">
+
+    <!-- Step 1 -->
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h3>Chrome 拡張をインストールする</h3>
+        <p>Chrome ウェブストアから Notipop をインストールしてください。</p>
+        <a href="#" class="btn-primary disabled">📦 Chrome ウェブストアで入手（近日公開）</a>
+        <span class="note">🔧 現在 Chrome ウェブストアへの申請準備中です</span>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h3>Notion と接続する</h3>
+        <p>拡張機能のポップアップを開き、「Notion と連携」ボタンをクリックします。<br>
+           Notion の認証画面が開くので、接続したいワークスペースで許可してください。</p>
+        <div class="step-img">
+          [ Notipop ポップアップ → 「Notion と連携」ボタン のイメージ ]
+        </div>
+        <span class="note">🔧 現在は手動でトークンを設定する方式です。OAuth 連携は近日対応予定。</span>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h3>保存先のデータベースを選ぶ</h3>
+        <p>接続後、メモを保存したい Notion のデータベースを選択します。<br>
+           設定はいつでも拡張機能のオプションページから変更できます。</p>
+        <div class="step-img">
+          [ データベース選択画面のイメージ ]
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <h3>テキストを選択して保存する</h3>
+        <p>ウェブページ上で保存したいテキストを選択し、ポップアップを開いて「Save to Notion」をクリック。<br>
+           ページタイトルと URL が自動で付与されて Notion に保存されます。</p>
+        <p>ショートカット <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>M</kbd> でポップアップを素早く開けます。</p>
+        <div class="step-img">
+          [ テキスト選択 → ポップアップ → Notion に保存 のイメージ ]
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== FAQ ===== -->
+<section class="section">
+  <p class="section-label">FAQ</p>
+  <h2>よくある質問</h2>
+  <div class="steps">
+
+    <div class="step">
+      <div class="step-num" style="background:var(--indigo-soft);border-color:rgba(99,102,241,.3);color:var(--indigo);">?</div>
+      <div class="step-body">
+        <h3>どの Notion プランでも使えますか？</h3>
+        <p>はい。Notion の無料プランでも利用できます。</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num" style="background:var(--indigo-soft);border-color:rgba(99,102,241,.3);color:var(--indigo);">?</div>
+      <div class="step-body">
+        <h3>保存したデータはどこに行きますか？</h3>
+        <p>テキストは直接あなたの Notion データベースに保存されます。<br>
+           Stellars Lab のサーバーにデータは保存されません。</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num" style="background:var(--indigo-soft);border-color:rgba(99,102,241,.3);color:var(--indigo);">?</div>
+      <div class="step-body">
+        <h3>対応しているフォーマットは？</h3>
+        <p>テキスト・見出し（H1〜H4）・太字に対応しています。<br>
+           選択範囲の Markdown 構造を維持したまま Notion へ送信します。</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num" style="background:var(--indigo-soft);border-color:rgba(99,102,241,.3);color:var(--indigo);">?</div>
+      <div class="step-body">
+        <h3>問題が発生した場合は？</h3>
+        <p>お気軽にご連絡ください。<br>
+           <a href="mailto:stellarsbit@gmail.com">stellarsbit@gmail.com</a></p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== Footer ===== -->
+<footer>
+  <div class="footer-inner">
+    <span class="footer-copy">© 2026 Stellars Lab</span>
+    <div class="footer-links">
+      <a href="privacy.html">プライバシーポリシー</a>
+      <a href="terms.html">利用規約</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

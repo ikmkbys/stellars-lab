@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notipop — Getting Started</title>
+  <meta name="description" content="Set up Notipop in 5 minutes. Install, connect to Notion, and start saving.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    .steps { display: flex; flex-direction: column; gap: 16px; margin-top: 32px; }
+    .step { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px 32px; display: flex; gap: 24px; align-items: flex-start; }
+    .step-num { width: 36px; height: 36px; border-radius: 50%; background: var(--gold-soft); border: 1px solid rgba(201,168,76,0.3); color: var(--gold); font-size: 15px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+    .step-body h3 { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+    .step-body p { font-size: 14px; color: var(--muted); line-height: 1.75; margin-bottom: 12px; }
+    .step-body p:last-child { margin-bottom: 0; }
+    .step-body .note { font-size: 12px; color: var(--gold); background: var(--gold-soft); border: 1px solid rgba(201,168,76,0.25); border-radius: 6px; padding: 8px 12px; display: inline-block; margin-top: 4px; }
+    .step-img { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-top: 12px; font-size: 13px; color: var(--muted); text-align: center; }
+    .btn-primary { display: inline-flex; align-items: center; gap: 8px; background: var(--gold); color: #08080f; font-size: 14px; font-weight: 700; padding: 11px 22px; border-radius: 8px; text-decoration: none; transition: opacity 0.2s; }
+    .btn-primary:hover { opacity: 0.85; text-decoration: none; }
+    .btn-primary.disabled { background: var(--bg3); color: var(--muted); border: 1px solid var(--border); cursor: default; pointer-events: none; }
+    kbd { background: var(--bg3); border: 1px solid var(--border); border-radius: 5px; padding: 2px 8px; font-size: 12px; font-family: monospace; color: var(--text); }
+    .page-hero { max-width: var(--max-w); margin: 0 auto; padding: 60px 24px 0; display: flex; align-items: center; gap: 16px; }
+    .page-hero-icon { font-size: 40px; }
+    .page-hero h1 { font-size: 28px; font-weight: 800; color: #fff; margin-bottom: 4px; }
+    .page-hero p { font-size: 14px; color: var(--muted); }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <a class="nav-logo" href="/en/" style="text-decoration:none;">
+      <span class="star">✦</span>
+      Stellars Lab
+    </a>
+    <ul class="nav-links">
+      <li><a href="/en/#products">Products</a></li>
+      <li><a href="/en/#tools">Tools</a></li>
+      <li><a href="/en/#about">About</a></li>
+      <li><a href="/notipop" class="lang-toggle">🇯🇵 JA</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="page-hero">
+  <div class="page-hero-icon">📌</div>
+  <div>
+    <h1>Getting Started with Notipop</h1>
+    <p>From install to your first Notion save — set up in under 5 minutes.</p>
+  </div>
+</div>
+
+<section class="section">
+  <div class="steps">
+
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h3>Install the Chrome extension</h3>
+        <p>Get Notipop from the Chrome Web Store.</p>
+        <a href="#" class="btn-primary disabled">📦 Get it on Chrome Web Store (coming soon)</a>
+        <span class="note">🔧 Chrome Web Store submission is in progress</span>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h3>Connect to Notion</h3>
+        <p>Open the Notipop popup and click "Connect to Notion".<br>
+           Authorize the connection in the Notion screen that appears.</p>
+        <div class="step-img">
+          [ Notipop popup → "Connect to Notion" button ]
+        </div>
+        <span class="note">🔧 Currently requires manual token setup. One-click OAuth coming soon.</span>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h3>Choose your Notion database</h3>
+        <p>After connecting, select the Notion database where your notes will be saved.<br>
+           You can change this anytime from the extension's options page.</p>
+        <div class="step-img">
+          [ Database selection screen ]
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <h3>Select text and save</h3>
+        <p>Highlight any text on a webpage, open the Notipop popup, and click "Save to Notion".<br>
+           The page title and URL are attached automatically.</p>
+        <p>Use the shortcut <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>M</kbd> to open the popup instantly.</p>
+        <div class="step-img">
+          [ Select text → popup → saved to Notion ]
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="section">
+  <p class="section-label">FAQ</p>
+  <h2>Frequently Asked Questions</h2>
+  <div class="steps">
+
+    <div class="step">
+      <div class="step-num" style="background:var(--indigo-soft);border-color:rgba(99,102,241,.3);color:var(--indigo);">?</div>
+      <div class="step-body">
+        <h3>Does it work with the free Notion plan?</h3>
+        <p>Yes. Notipop works with any Notion plan, including the free tier.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num" style="background:var(--indigo-soft);border-color:rgba(99,102,241,.3);color:var(--indigo);">?</div>
+      <div class="step-body">
+        <h3>Where does my data go?</h3>
+        <p>Text is saved directly to your own Notion database.<br>
+           Stellars Lab does not store any of your content.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num" style="background:var(--indigo-soft);border-color:rgba(99,102,241,.3);color:var(--indigo);">?</div>
+      <div class="step-body">
+        <h3>What formatting is supported?</h3>
+        <p>Plain text, headings (H1–H4), and bold text. The structure of your selection is preserved when sent to Notion.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num" style="background:var(--indigo-soft);border-color:rgba(99,102,241,.3);color:var(--indigo);">?</div>
+      <div class="step-body">
+        <h3>Something not working?</h3>
+        <p>Reach out anytime:<br>
+           <a href="mailto:stellarsbit@gmail.com">stellarsbit@gmail.com</a></p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <span class="footer-copy">© 2026 Stellars Lab</span>
+    <div class="footer-links">
+      <a href="/en/privacy">Privacy Policy</a>
+      <a href="/en/terms">Terms of Service</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
