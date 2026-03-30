@@ -212,7 +212,7 @@ function resetGame() {
   nextCakeDist  = 2000 + Math.random()*2000;
   warningTimer  = 0;   // 巨大岩の警告カウント
   shakeTimer    = 0;   // 画面シェイク
-  if (!hiScore) hiScore = 0;
+  if (!hiScore) hiScore = parseInt(localStorage.getItem('pixelRunnerHiScore') || '0');  // ローカルストレージから読み込み
   initStars();
   initClouds();
   initGround();
@@ -1408,7 +1408,10 @@ function update() {
     if (!p.dead && collide(p, o)) {
       p.dead = true;
       state  = 'dead';
-      if (score > hiScore) hiScore = score;
+      if (score > hiScore) {
+        hiScore = score;
+        localStorage.setItem('pixelRunnerHiScore', String(Math.floor(hiScore)));  // ベストスコアを保存
+      }
       spawnDeathParticles();
       stopBGM();
       soundGameOver();
