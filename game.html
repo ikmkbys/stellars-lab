@@ -562,122 +562,118 @@ function drawPlayer() {
   const cy = Math.floor(p.y);
   const sw = p.w;
   const sh = Math.floor(p.h * p.squish);
-  const oy = p.h - sh;          // スクワッシュ時の下端固定オフセット
-  const runPhase = Math.floor(p.animFrame/6)%4;
+  const oy = p.h - sh;
+  const runPhase = Math.floor(p.animFrame / 6) % 4;
 
   ctx.save();
-  // ジャンプ中の傾き
   ctx.translate(cx + sw/2, cy + oy + sh/2);
   ctx.rotate(p.lean);
   ctx.translate(-(sw/2), -(sh/2));
 
   const bx = 0, by = 0;
-  const DR  = '#18182a';   // ドレス（ダークネイビー）
-  const AP  = '#f4f2ee';   // エプロン（白）
-  const HW  = '#ffffff';   // 白ハイライト
-  const HR  = '#3d1e0a';   // 髪（ダークブラウン）
-  const SK2 = '#f4b088';   // 肌色
-  const EY  = '#5060e8';   // 目（ブルー）
+  const HR = '#2a1208';   // 髪（ダークブラウン）
+  const SK = '#f4b088';   // 肌色
+  const NV = '#1a1a5a';   // ネイビー（セーラー服）
+  const WH = '#f0f4ff';   // 白（カラー）
+  const RD = '#cc2020';   // 赤（スカーフ）
+  const EY = '#3850e0';   // 目（ブルー）
+  const PI = '#ff99bb';   // 猫耳ピンク
+  const BL = '#0c0c1a';   // 黒靴
+  const HL = '#5a2e10';   // 髪ハイライト
 
-  // ===ヘッドドレス===
-  pixelRect(bx+6,  by,     12, 2, AP);
-  pixelRect(bx+10, by+1,    4, 3, AP);     // 中央山
+  // ===猫耳（横向き：後ろ耳・前耳）===
+  pixelRect(bx+3,  by,   2, 3, HR);           // 後ろ耳先端
+  pixelRect(bx+2,  by+1, 4, 2, HR);           // 後ろ耳根元
+  pixelRect(bx+3,  by+1, 2, 1, PI);           // 後ろ耳ピンク内側
+  pixelRect(bx+10, by,   2, 3, HR);           // 前耳先端
+  pixelRect(bx+9,  by+1, 4, 2, HR);           // 前耳根元
+  pixelRect(bx+10, by+1, 2, 1, PI);           // 前耳ピンク内側
 
-  // ===髪===
-  pixelRect(bx+2,  by+1,  sw-4, 7, HR);   // 髪トップ
-  pixelRect(bx,    by+5,   3,  12, HR);   // 左ツインテール
-  pixelRect(bx+sw-3, by+5, 3,  12, HR);   // 右ツインテール
-  pixelRect(bx+3,  by+2,   5,   2, '#5a2e10'); // 髪ハイライト
+  // ===髪（横向き）===
+  pixelRect(bx+0,  by+3, 16, 5, HR);          // 頭上の髪
+  pixelRect(bx+0,  by+7,  7, 9, HR);          // 後ろ髪（ポニーテール）
+  pixelRect(bx+0,  by+13, 4, 4, HR);          // テール末端
+  pixelRect(bx+3,  by+3,  6, 2, HL);          // 髪ハイライト
+  pixelRect(bx+13, by+4,  5, 3, HR);          // 前髪
 
-  // ===顔（肌）===
-  pixelRect(bx+3,  by+4,  sw-6, 9, SK2);
+  // ===顔（横向き・右向き）===
+  pixelRect(bx+10, by+5, 12, 9, SK);          // 顔肌
+  pixelRect(bx+10, by+4,  9, 2, HR);          // 前髪ライン
 
-  // 目（左）まつ毛→白目→虹彩→瞳→ハイライト
-  pixelRect(bx+4,  by+6,   5, 1, '#100808');
-  pixelRect(bx+4,  by+7,   5, 3, '#dde0ff');
-  pixelRect(bx+5,  by+7,   3, 3, EY);
-  pixelRect(bx+6,  by+8,   1, 1, '#000820');
-  pixelRect(bx+5,  by+7,   1, 1, HW);
-  // 目（右）
-  pixelRect(bx+sw-9, by+6, 5, 1, '#100808');
-  pixelRect(bx+sw-9, by+7, 5, 3, '#dde0ff');
-  pixelRect(bx+sw-8, by+7, 3, 3, EY);
-  pixelRect(bx+sw-7, by+8, 1, 1, '#000820');
-  pixelRect(bx+sw-9, by+7, 1, 1, HW);
+  // 目（横向き1個）まつ毛→白目→虹彩→瞳→ハイライト
+  pixelRect(bx+16, by+7,  4, 1, '#080808');
+  pixelRect(bx+15, by+8,  5, 3, '#dde0ff');
+  pixelRect(bx+16, by+8,  3, 3, EY);
+  pixelRect(bx+17, by+9,  1, 1, '#000010');
+  pixelRect(bx+15, by+8,  1, 1, WH);
 
-  // ほっぺ・口
-  pixelRect(bx+3,    by+10, 2, 2, '#f09888');
-  pixelRect(bx+sw-5, by+10, 2, 2, '#f09888');
-  pixelRect(bx+10,   by+11, 3, 1, '#c05868');
+  // 鼻・ほっぺ・口
+  pixelRect(bx+21, by+11, 1, 1, '#d07060');   // 鼻
+  pixelRect(bx+20, by+11, 2, 1, '#f0a090');   // ほっぺ
+  pixelRect(bx+19, by+13, 3, 1, '#cc5060');   // 口
 
-  // ===衿・リボン===
-  pixelRect(bx+7,      by+13, 3, 4, AP);
-  pixelRect(bx+sw-10,  by+13, 3, 4, AP);
-  pixelRect(bx+9,      by+15, sw-18, 2, '#e07080'); // ピンクリボン
+  // ===首===
+  pixelRect(bx+13, by+14, 5, 2, SK);
 
-  // ===胴体（ドレス）+ エプロン===
-  pixelRect(bx+3,  by+13, sw-6, 9, DR);
-  pixelRect(bx+8,  by+14,  8,   8, AP);   // エプロン
-  pixelRect(bx+9,  by+14,  6,   1, HW);  // ハイライト
+  // ===胴体（セーラー服）===
+  pixelRect(bx+3,  by+16, 19, 8, NV);         // 胴体
+  // セーラーカラー（白 + ネイビーライン）
+  pixelRect(bx+3,  by+16, 19, 2, WH);         // 上カラーライン
+  pixelRect(bx+13, by+16,  9, 6, WH);         // 前カラー（V字部分）
+  pixelRect(bx+3,  by+16,  3, 2, NV);         // カラーにネイビーライン
+  // 赤スカーフ
+  pixelRect(bx+15, by+17,  5, 4, RD);
+  pixelRect(bx+16, by+20,  2, 4, RD);         // スカーフ垂れ
 
   // ===腕アニメ===
   if (p.onGround) {
     if (runPhase < 2) {
-      pixelRect(bx,      by+13, 4, 4, SK2);   // 左腕（後ろ）
-      pixelRect(bx+sw-4, by+15, 4, 6, SK2);   // 右腕（前）
-      pixelRect(bx,      by+17, 4, 3, AP);    // 左カフス
-      pixelRect(bx+sw-4, by+19, 4, 3, AP);    // 右カフス
+      pixelRect(bx+4,  by+17, 3, 8, SK);      // 後腕（引き）
+      pixelRect(bx+20, by+18, 3, 7, SK);      // 前腕（押し出し）
     } else {
-      pixelRect(bx,      by+15, 4, 6, SK2);
-      pixelRect(bx+sw-4, by+13, 4, 4, SK2);
-      pixelRect(bx,      by+19, 4, 3, AP);
-      pixelRect(bx+sw-4, by+17, 4, 3, AP);
+      pixelRect(bx+4,  by+19, 3, 7, SK);
+      pixelRect(bx+20, by+16, 3, 8, SK);
     }
   } else {
-    // ジャンプ：両腕を上げる
-    pixelRect(bx,      by+11, 4, 6, SK2);
-    pixelRect(bx+sw-4, by+11, 4, 6, SK2);
-    pixelRect(bx,      by+11, 4, 3, AP);
-    pixelRect(bx+sw-4, by+11, 4, 3, AP);
+    // ジャンプ：前腕を上げ、後腕を後ろへ
+    pixelRect(bx+20, by+13, 3, 8, SK);        // 前腕（上向き）
+    pixelRect(bx+3,  by+18, 3, 7, SK);        // 後腕（後方）
   }
 
-  // ===スカート（下方向に広がる）===
-  const skt = by + 22;
-  const skH = sh - 22;
-  if (skH > 0) {
-    pixelRect(bx+2, skt,     sw-4, skH,   DR);   // スカート本体
-    pixelRect(bx,   skt+3,   sw,   skH-3, DR);   // 裾広がり
-    if (skH >= 4) {
-      pixelRect(bx+7, skt,  10, skH-2, AP);      // エプロンスカート
-      pixelRect(bx+8, skt,   8,     1, HW);       // ハイライト
-    }
-    pixelRect(bx, by+sh-4, sw, 2, AP);           // 裾ホワイトライン
-  }
+  // ===スカート===
+  pixelRect(bx+1,  by+24, 20, 3, NV);
+  pixelRect(bx+0,  by+25, 22, 3, NV);         // 裾広がり
+  pixelRect(bx+0,  by+27, 22, 1, WH);         // 白い裾ライン
 
-  // ===足・靴===
+  // ===足・靴（横向き走りアニメ）===
   if (p.onGround) {
     if (runPhase === 0) {
-      pixelRect(bx+3,    by+sh-7, 5, 7, SK2);
-      pixelRect(bx+sw-8, by+sh-4, 5, 4, SK2);
-      pixelRect(bx+2,    by+sh-2, 6, 2, '#0c0c18');
-      pixelRect(bx+sw-9, by+sh-2, 5, 2, '#0c0c18');
+      pixelRect(bx+13, by+27, 4, 5, SK);      // 前脚（前に出す）
+      pixelRect(bx+15, by+30, 7, 2, BL);      // 前靴
+      pixelRect(bx+4,  by+27, 4, 4, SK);      // 後脚（後ろに引く）
+      pixelRect(bx+2,  by+30, 6, 2, BL);      // 後靴
+    } else if (runPhase === 1) {
+      pixelRect(bx+11, by+26, 4, 6, SK);
+      pixelRect(bx+13, by+30, 7, 2, BL);
+      pixelRect(bx+5,  by+27, 4, 5, SK);
+      pixelRect(bx+4,  by+30, 6, 2, BL);
     } else if (runPhase === 2) {
-      pixelRect(bx+sw-8, by+sh-7, 5, 7, SK2);
-      pixelRect(bx+3,    by+sh-4, 5, 4, SK2);
-      pixelRect(bx+sw-9, by+sh-2, 6, 2, '#0c0c18');
-      pixelRect(bx+2,    by+sh-2, 5, 2, '#0c0c18');
+      pixelRect(bx+4,  by+27, 4, 5, SK);      // 前後逆
+      pixelRect(bx+2,  by+30, 6, 2, BL);
+      pixelRect(bx+13, by+27, 4, 4, SK);
+      pixelRect(bx+15, by+30, 7, 2, BL);
     } else {
-      pixelRect(bx+3,    by+sh-5, 5, 5, SK2);
-      pixelRect(bx+sw-8, by+sh-5, 5, 5, SK2);
-      pixelRect(bx+2,    by+sh-2, 6, 2, '#0c0c18');
-      pixelRect(bx+sw-9, by+sh-2, 6, 2, '#0c0c18');
+      pixelRect(bx+5,  by+26, 4, 6, SK);
+      pixelRect(bx+4,  by+30, 6, 2, BL);
+      pixelRect(bx+11, by+27, 4, 5, SK);
+      pixelRect(bx+13, by+30, 7, 2, BL);
     }
   } else {
-    // ジャンプ：膝を引き上げる
-    pixelRect(bx+4,    by+sh-6, 4, 6, SK2);
-    pixelRect(bx+sw-8, by+sh-6, 4, 6, SK2);
-    pixelRect(bx+3,    by+sh-2, 6, 2, '#0c0c18');
-    pixelRect(bx+sw-9, by+sh-2, 6, 2, '#0c0c18');
+    // ジャンプ：前足膝上げ、後足後ろ伸ばし
+    pixelRect(bx+14, by+24, 4, 7, SK);        // 前脚（膝上げ）
+    pixelRect(bx+15, by+29, 6, 2, BL);        // 前靴
+    pixelRect(bx+4,  by+26, 4, 5, SK);        // 後脚（伸ばし）
+    pixelRect(bx+2,  by+29, 5, 2, BL);        // 後靴
   }
 
   ctx.restore();
