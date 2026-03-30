@@ -76,6 +76,7 @@ const C = {
 
 // ---- ゲーム状態 ----
 let state, score, hiScore, speed, frame, particles, stars, clouds, groundTiles, obstacles, player, bgX;
+let selectedChar = 0;  // 0=戦士 1=白魔道士 2=黒魔道士（リセット不要）
 
 function initStars() {
   stars = [];
@@ -251,8 +252,14 @@ function onJumpRelease() {
 }
 
 // ---- 入力 ----
-document.addEventListener('keydown',  e => { if (e.code === 'Space') { e.preventDefault(); onJumpPress(); } });
-document.addEventListener('keyup',    e => { if (e.code === 'Space') { onJumpRelease(); } });
+document.addEventListener('keydown', e => {
+  if (e.code === 'Space') { e.preventDefault(); onJumpPress(); return; }
+  if (state !== 'playing') {                                                   // キャラ選択（プレイ中以外）
+    if (e.code === 'ArrowLeft')  { e.preventDefault(); selectedChar = (selectedChar + 2) % 3; }
+    if (e.code === 'ArrowRight') { e.preventDefault(); selectedChar = (selectedChar + 1) % 3; }
+  }
+});
+document.addEventListener('keyup', e => { if (e.code === 'Space') { onJumpRelease(); } });
 function getCanvasPos(e) {
   const r = canvas.getBoundingClientRect();
   const src = e.touches ? e.touches[0] : e;
@@ -274,13 +281,23 @@ function toggleSound() {
 }
 
 canvas.addEventListener('mousedown', e => {
-  if (isSndBtn(getCanvasPos(e))) { toggleSound(); return; }
+  const pos = getCanvasPos(e);
+  if (isSndBtn(pos)) { toggleSound(); return; }
+  if (state === 'idle') {                                                      // アイドル時：左右クリックでキャラ選択
+    if (pos.x < W/2 - 50 && pos.y > 65 && pos.y < 142) { selectedChar = (selectedChar + 2) % 3; return; }
+    if (pos.x > W/2 + 50 && pos.y > 65 && pos.y < 142) { selectedChar = (selectedChar + 1) % 3; return; }
+  }
   onJumpPress();
 });
 canvas.addEventListener('mouseup',    onJumpRelease);
 canvas.addEventListener('touchstart', e => {
   e.preventDefault();
-  if (isSndBtn(getCanvasPos(e))) { toggleSound(); return; }
+  const pos = getCanvasPos(e);
+  if (isSndBtn(pos)) { toggleSound(); return; }
+  if (state === 'idle') {
+    if (pos.x < W/2 - 50 && pos.y > 65 && pos.y < 142) { selectedChar = (selectedChar + 2) % 3; return; }
+    if (pos.x > W/2 + 50 && pos.y > 65 && pos.y < 142) { selectedChar = (selectedChar + 1) % 3; return; }
+  }
   onJumpPress();
 }, { passive: false });
 canvas.addEventListener('touchend',   e => { e.preventDefault(); onJumpRelease(); }, { passive: false });
@@ -555,6 +572,208 @@ function drawGround() {
 }
 
 // ---- プレイヤー描画 ----
+// ---- FF3キャラ描画関数（3種） ----
+function drawCharWarrior(bx, by, sh, runPhase, onGround) {
+  // スポーツ系女子 (オレンジ髪・青ジャージ)
+  const HR = '#ff8800'; const HH = '#ffcc44'; const SK = '#f4b088';
+  const JK = '#2255cc'; const JL = '#4488ff'; const WH = '#f0f0f0';
+  const BL = '#101010';
+
+  // 短いオレンジ髪
+  pixelRect(bx+0,  by+2, 13, 5, HR); pixelRect(bx+2,  by+2, 8, 2, HH);
+  pixelRect(bx+0,  by+6,  5, 6, HR);
+  pixelRect(bx+12, by+2,  8, 4, HR);
+  // 顔
+  pixelRect(bx+10, by+4, 12, 8, SK);
+  pixelRect(bx+10, by+3,  8, 2, HR);
+  // 目（明るいブルー）
+  pixelRect(bx+16, by+6,  4, 1, '#080808');
+  pixelRect(bx+15, by+7,  5, 3, '#ddeeff');
+  pixelRect(bx+16, by+7,  3, 3, '#2288ff');
+  pixelRect(bx+17, by+8,  1, 1, '#001020');
+  pixelRect(bx+15, by+7,  1, 1, '#ffffff');
+  pixelRect(bx+21, by+10, 1, 1, '#cc7060');   // 鼻
+  pixelRect(bx+20, by+10, 2, 1, '#f0a090');   // ほっぺ
+  pixelRect(bx+19, by+12, 3, 1, '#cc4060');   // 口
+  // 首
+  pixelRect(bx+13, by+12, 5, 2, SK);
+  // ジャージ上（白ライン入り）
+  pixelRect(bx+4,  by+14, 16, 9, JK);
+  pixelRect(bx+4,  by+14, 16, 2, JL);         // 肩ライン
+  pixelRect(bx+4,  by+14,  2, 9, WH);         // 左白ライン
+  pixelRect(bx+18, by+14,  2, 9, WH);         // 右白ライン
+  pixelRect(bx+11, by+14,  2, 9, WH);         // センタージップ
+  // 腕
+  if (onGround) {
+    if (runPhase < 2) {
+      pixelRect(bx+2,  by+14, 4, 9, JK); pixelRect(bx+20, by+15, 4, 8, JK);
+    } else {
+      pixelRect(bx+2,  by+16, 4, 9, JK); pixelRect(bx+20, by+13, 4, 8, JK);
+    }
+  } else {
+    pixelRect(bx+20, by+11, 4, 8, JK); pixelRect(bx+2,  by+16, 4, 9, JK);
+  }
+  // ショートパンツ
+  pixelRect(bx+3,  by+23, 18, 5, WH);
+  pixelRect(bx+3,  by+23, 18, 1, '#c0c0c0');
+  // 足・スニーカー（白）
+  if (onGround) {
+    if (runPhase === 0) {
+      pixelRect(bx+13, by+27, 5, 5, SK); pixelRect(bx+13, by+30, 7, 2, WH);
+      pixelRect(bx+4,  by+27, 5, 4, SK); pixelRect(bx+2,  by+30, 6, 2, WH);
+    } else if (runPhase === 1) {
+      pixelRect(bx+11, by+26, 5, 6, SK); pixelRect(bx+11, by+30, 7, 2, WH);
+      pixelRect(bx+5,  by+27, 5, 4, SK); pixelRect(bx+3,  by+30, 6, 2, WH);
+    } else if (runPhase === 2) {
+      pixelRect(bx+4,  by+27, 5, 5, SK); pixelRect(bx+2,  by+30, 6, 2, WH);
+      pixelRect(bx+13, by+27, 5, 4, SK); pixelRect(bx+13, by+30, 7, 2, WH);
+    } else {
+      pixelRect(bx+5,  by+26, 5, 6, SK); pixelRect(bx+3,  by+30, 6, 2, WH);
+      pixelRect(bx+11, by+27, 5, 4, SK); pixelRect(bx+11, by+30, 7, 2, WH);
+    }
+  } else {
+    pixelRect(bx+14, by+24, 5, 7, SK); pixelRect(bx+14, by+30, 6, 2, WH);
+    pixelRect(bx+3,  by+26, 5, 5, SK); pixelRect(bx+1,  by+30, 6, 2, WH);
+  }
+}
+
+function drawCharWhiteMage(bx, by, sh, runPhase, onGround) {
+  // 制服系女子 (ポニーテール・ピンクリボン・制服)
+  const HR = '#3d1e0a'; const HH = '#6a3818'; const SK = '#f4b088';
+  const RI = '#ff4488'; const TP = '#f0f4ff'; const CO = '#2040a0';
+  const PL = '#c03050'; const SO = '#f0f0f8'; const BL = '#101020';
+
+  // ポニーテール（横向き）
+  pixelRect(bx+0,  by+3, 15, 5, HR); pixelRect(bx+3, by+3, 8, 2, HH);
+  pixelRect(bx+0,  by+7,  7, 9, HR); pixelRect(bx+0, by+12, 5, 4, HR);
+  pixelRect(bx+13, by+4,  5, 3, HR);
+  // ピンクリボン（ポニーテール結び目）
+  pixelRect(bx+1,  by+7,  4, 3, RI); pixelRect(bx+2, by+8, 2, 1, '#ff88bb');
+  // 顔
+  pixelRect(bx+11, by+4, 11, 9, SK);
+  pixelRect(bx+11, by+3,  9, 2, HR);
+  // 目（ブルー）
+  pixelRect(bx+16, by+6,  4, 1, '#080808');
+  pixelRect(bx+15, by+7,  5, 3, '#dde0ff');
+  pixelRect(bx+16, by+7,  3, 3, '#4060e0');
+  pixelRect(bx+17, by+8,  1, 1, '#000010');
+  pixelRect(bx+15, by+7,  1, 1, '#ffffff');
+  pixelRect(bx+19, by+10, 2, 1, '#080808');   // 下まつ毛
+  pixelRect(bx+21, by+10, 1, 1, '#cc7060');   // 鼻
+  pixelRect(bx+20, by+10, 2, 1, '#f0a090');   // ほっぺ
+  pixelRect(bx+19, by+12, 3, 1, '#cc4060');   // 口
+  // 首
+  pixelRect(bx+13, by+13, 5, 2, SK);
+  // セーラー服（白トップ＋紺カラー）
+  pixelRect(bx+5,  by+15, 14, 8, TP);
+  pixelRect(bx+4,  by+15, 16, 2, CO);         // カラーライン
+  pixelRect(bx+14, by+15,  8, 6, CO);         // 前Vカラー
+  pixelRect(bx+5,  by+17, 14, 6, TP);         // ボディ上書き
+  // 腕
+  if (onGround) {
+    if (runPhase < 2) {
+      pixelRect(bx+3,  by+15, 3, 9, SK); pixelRect(bx+20, by+16, 3, 8, SK);
+    } else {
+      pixelRect(bx+3,  by+17, 3, 9, SK); pixelRect(bx+20, by+14, 3, 8, SK);
+    }
+  } else {
+    pixelRect(bx+20, by+12, 3, 8, SK); pixelRect(bx+3, by+17, 3, 9, SK);
+  }
+  // プリーツスカート
+  pixelRect(bx+2,  by+23, 20, 5, PL);
+  pixelRect(bx+1,  by+24, 22, 4, PL);
+  for (let i = 0; i < 4; i++) pixelRect(bx+4+i*5, by+24, 1, 4, '#a02040');  // ひだ線
+  // 白ソックス＋黒靴
+  if (onGround) {
+    if (runPhase === 0) {
+      pixelRect(bx+13, by+27, 4, 5, SO); pixelRect(bx+12, by+30, 7, 2, BL);
+      pixelRect(bx+4,  by+27, 4, 4, SO); pixelRect(bx+2,  by+30, 6, 2, BL);
+    } else if (runPhase === 1) {
+      pixelRect(bx+11, by+26, 4, 6, SO); pixelRect(bx+10, by+30, 7, 2, BL);
+      pixelRect(bx+5,  by+27, 4, 4, SO); pixelRect(bx+3,  by+30, 6, 2, BL);
+    } else if (runPhase === 2) {
+      pixelRect(bx+4,  by+27, 4, 5, SO); pixelRect(bx+2,  by+30, 6, 2, BL);
+      pixelRect(bx+13, by+27, 4, 4, SO); pixelRect(bx+12, by+30, 7, 2, BL);
+    } else {
+      pixelRect(bx+5,  by+26, 4, 6, SO); pixelRect(bx+3,  by+30, 6, 2, BL);
+      pixelRect(bx+11, by+27, 4, 4, SO); pixelRect(bx+10, by+30, 7, 2, BL);
+    }
+  } else {
+    pixelRect(bx+13, by+25, 4, 6, SO); pixelRect(bx+12, by+30, 6, 2, BL);
+    pixelRect(bx+3,  by+27, 4, 4, SO); pixelRect(bx+1,  by+30, 5, 2, BL);
+  }
+}
+
+function drawCharBlackMage(bx, by, sh, runPhase, onGround) {
+  // ゴシックロリータ (黒紫ロング髪・フリルドレス)
+  const HR = '#1a0a2a'; const HH = '#7744ee'; const SK = '#f8e8f0';
+  const DR = '#18082a'; const FR = '#f0e8ff'; const BO = '#6600aa';
+  const BT = '#0a0014'; const EY = '#aa44ff';
+
+  // ロングダーク髪（後ろに流れる）
+  pixelRect(bx+0,  by+2,  14, 5, HR); pixelRect(bx+2, by+2, 8, 2, HH);
+  pixelRect(bx+0,  by+6,   5, 16, HR); pixelRect(bx+0, by+18, 4, 6, HR);
+  pixelRect(bx+14, by+3,   5, 4, HR);
+  // 大きな紫リボン
+  pixelRect(bx+7,  by+2,   6, 4, BO); pixelRect(bx+9, by+3, 2, 2, '#cc88ff');
+  // 顔（少し青白い肌）
+  pixelRect(bx+11, by+4,  11, 9, SK);
+  pixelRect(bx+11, by+3,   9, 2, HR);
+  // 目（紫・ミステリアス）
+  pixelRect(bx+16, by+6,  4, 1, '#0a0020');
+  pixelRect(bx+15, by+7,  5, 3, '#f0e8ff');
+  pixelRect(bx+16, by+7,  3, 3, EY);
+  pixelRect(bx+17, by+8,  1, 1, '#200030');
+  pixelRect(bx+15, by+7,  1, 1, '#ffffff');
+  pixelRect(bx+19, by+9,  2, 1, '#0a0020');   // 長いまつ毛
+  pixelRect(bx+21, by+10, 1, 1, '#c07080');   // 鼻
+  pixelRect(bx+20, by+12, 3, 1, '#aa3060');   // 口
+  // 首
+  pixelRect(bx+13, by+13, 5, 2, SK);
+  // ゴシックドレス（上部フリル）
+  pixelRect(bx+4,  by+15, 16, 2, FR);         // フリル上段
+  pixelRect(bx+5,  by+17, 14, 7, DR);         // ドレス本体
+  // 胸フリル装飾
+  pixelRect(bx+12, by+17,  6, 4, FR); pixelRect(bx+13, by+18, 4, 2, DR);
+  // 腕（袖＋袖口フリル）
+  if (onGround) {
+    if (runPhase < 2) {
+      pixelRect(bx+3,  by+15, 3, 9, DR); pixelRect(bx+3,  by+22, 4, 2, FR);
+      pixelRect(bx+20, by+16, 3, 8, DR); pixelRect(bx+20, by+22, 4, 2, FR);
+    } else {
+      pixelRect(bx+3,  by+17, 3, 9, DR); pixelRect(bx+3,  by+24, 4, 2, FR);
+      pixelRect(bx+20, by+14, 3, 8, DR); pixelRect(bx+20, by+20, 4, 2, FR);
+    }
+  } else {
+    pixelRect(bx+20, by+12, 3, 8, DR); pixelRect(bx+20, by+18, 4, 2, FR);
+    pixelRect(bx+3,  by+17, 3, 9, DR); pixelRect(bx+3,  by+24, 4, 2, FR);
+  }
+  // スカート（広がり＋裾フリル）
+  pixelRect(bx+2,  by+24, 20, 4, DR);
+  pixelRect(bx+0,  by+25, 22, 3, DR);
+  pixelRect(bx+0,  by+27, 22, 2, FR);         // 裾フリル
+  for (let i = 0; i < 4; i++) pixelRect(bx+3+i*6, by+27, 3, 2, DR);  // フリル凸凹
+  // ブーツ（ゴシック）
+  if (onGround) {
+    if (runPhase === 0) {
+      pixelRect(bx+13, by+28, 4, 4, BT); pixelRect(bx+12, by+30, 7, 2, BT);
+      pixelRect(bx+4,  by+28, 4, 3, BT); pixelRect(bx+2,  by+30, 5, 2, BT);
+    } else if (runPhase === 1) {
+      pixelRect(bx+11, by+27, 4, 5, BT); pixelRect(bx+10, by+30, 7, 2, BT);
+      pixelRect(bx+5,  by+28, 4, 3, BT); pixelRect(bx+3,  by+30, 5, 2, BT);
+    } else if (runPhase === 2) {
+      pixelRect(bx+4,  by+28, 4, 4, BT); pixelRect(bx+2,  by+30, 5, 2, BT);
+      pixelRect(bx+13, by+28, 4, 3, BT); pixelRect(bx+12, by+30, 7, 2, BT);
+    } else {
+      pixelRect(bx+5,  by+27, 4, 5, BT); pixelRect(bx+3,  by+30, 5, 2, BT);
+      pixelRect(bx+11, by+28, 4, 3, BT); pixelRect(bx+10, by+30, 7, 2, BT);
+    }
+  } else {
+    pixelRect(bx+14, by+25, 4, 6, BT); pixelRect(bx+13, by+30, 6, 2, BT);
+    pixelRect(bx+3,  by+27, 4, 5, BT); pixelRect(bx+1,  by+30, 5, 2, BT);
+  }
+}
+
 function drawPlayer() {
   const p = player;
   if (p.dead) return;
@@ -570,115 +789,14 @@ function drawPlayer() {
   ctx.rotate(p.lean);
   ctx.translate(-(sw/2), -(sh/2));
 
-  const bx = 0, by = 0;
-  const HR = '#2a1208';   // 髪（ダークブラウン）
-  const SK = '#f4b088';   // 肌色
-  const NV = '#1a1a5a';   // ネイビー（セーラー服）
-  const WH = '#f0f4ff';   // 白（カラー）
-  const RD = '#cc2020';   // 赤（スカーフ）
-  const EY = '#3850e0';   // 目（ブルー）
-  const PI = '#ff99bb';   // 猫耳ピンク
-  const BL = '#0c0c1a';   // 黒靴
-  const HL = '#5a2e10';   // 髪ハイライト
-
-  // ===猫耳（横向き：後ろ耳・前耳）===
-  pixelRect(bx+3,  by,   2, 3, HR);           // 後ろ耳先端
-  pixelRect(bx+2,  by+1, 4, 2, HR);           // 後ろ耳根元
-  pixelRect(bx+3,  by+1, 2, 1, PI);           // 後ろ耳ピンク内側
-  pixelRect(bx+10, by,   2, 3, HR);           // 前耳先端
-  pixelRect(bx+9,  by+1, 4, 2, HR);           // 前耳根元
-  pixelRect(bx+10, by+1, 2, 1, PI);           // 前耳ピンク内側
-
-  // ===髪（横向き）===
-  pixelRect(bx+0,  by+3, 16, 5, HR);          // 頭上の髪
-  pixelRect(bx+0,  by+7,  7, 9, HR);          // 後ろ髪（ポニーテール）
-  pixelRect(bx+0,  by+13, 4, 4, HR);          // テール末端
-  pixelRect(bx+3,  by+3,  6, 2, HL);          // 髪ハイライト
-  pixelRect(bx+13, by+4,  5, 3, HR);          // 前髪
-
-  // ===顔（横向き・右向き）===
-  pixelRect(bx+10, by+5, 12, 9, SK);          // 顔肌
-  pixelRect(bx+10, by+4,  9, 2, HR);          // 前髪ライン
-
-  // 目（横向き1個）まつ毛→白目→虹彩→瞳→ハイライト
-  pixelRect(bx+16, by+7,  4, 1, '#080808');
-  pixelRect(bx+15, by+8,  5, 3, '#dde0ff');
-  pixelRect(bx+16, by+8,  3, 3, EY);
-  pixelRect(bx+17, by+9,  1, 1, '#000010');
-  pixelRect(bx+15, by+8,  1, 1, WH);
-
-  // 鼻・ほっぺ・口
-  pixelRect(bx+21, by+11, 1, 1, '#d07060');   // 鼻
-  pixelRect(bx+20, by+11, 2, 1, '#f0a090');   // ほっぺ
-  pixelRect(bx+19, by+13, 3, 1, '#cc5060');   // 口
-
-  // ===首===
-  pixelRect(bx+13, by+14, 5, 2, SK);
-
-  // ===胴体（セーラー服）===
-  pixelRect(bx+3,  by+16, 19, 8, NV);         // 胴体
-  // セーラーカラー（白 + ネイビーライン）
-  pixelRect(bx+3,  by+16, 19, 2, WH);         // 上カラーライン
-  pixelRect(bx+13, by+16,  9, 6, WH);         // 前カラー（V字部分）
-  pixelRect(bx+3,  by+16,  3, 2, NV);         // カラーにネイビーライン
-  // 赤スカーフ
-  pixelRect(bx+15, by+17,  5, 4, RD);
-  pixelRect(bx+16, by+20,  2, 4, RD);         // スカーフ垂れ
-
-  // ===腕アニメ===
-  if (p.onGround) {
-    if (runPhase < 2) {
-      pixelRect(bx+4,  by+17, 3, 8, SK);      // 後腕（引き）
-      pixelRect(bx+20, by+18, 3, 7, SK);      // 前腕（押し出し）
-    } else {
-      pixelRect(bx+4,  by+19, 3, 7, SK);
-      pixelRect(bx+20, by+16, 3, 8, SK);
-    }
-  } else {
-    // ジャンプ：前腕を上げ、後腕を後ろへ
-    pixelRect(bx+20, by+13, 3, 8, SK);        // 前腕（上向き）
-    pixelRect(bx+3,  by+18, 3, 7, SK);        // 後腕（後方）
-  }
-
-  // ===スカート===
-  pixelRect(bx+1,  by+24, 20, 3, NV);
-  pixelRect(bx+0,  by+25, 22, 3, NV);         // 裾広がり
-  pixelRect(bx+0,  by+27, 22, 1, WH);         // 白い裾ライン
-
-  // ===足・靴（横向き走りアニメ）===
-  if (p.onGround) {
-    if (runPhase === 0) {
-      pixelRect(bx+13, by+27, 4, 5, SK);      // 前脚（前に出す）
-      pixelRect(bx+15, by+30, 7, 2, BL);      // 前靴
-      pixelRect(bx+4,  by+27, 4, 4, SK);      // 後脚（後ろに引く）
-      pixelRect(bx+2,  by+30, 6, 2, BL);      // 後靴
-    } else if (runPhase === 1) {
-      pixelRect(bx+11, by+26, 4, 6, SK);
-      pixelRect(bx+13, by+30, 7, 2, BL);
-      pixelRect(bx+5,  by+27, 4, 5, SK);
-      pixelRect(bx+4,  by+30, 6, 2, BL);
-    } else if (runPhase === 2) {
-      pixelRect(bx+4,  by+27, 4, 5, SK);      // 前後逆
-      pixelRect(bx+2,  by+30, 6, 2, BL);
-      pixelRect(bx+13, by+27, 4, 4, SK);
-      pixelRect(bx+15, by+30, 7, 2, BL);
-    } else {
-      pixelRect(bx+5,  by+26, 4, 6, SK);
-      pixelRect(bx+4,  by+30, 6, 2, BL);
-      pixelRect(bx+11, by+27, 4, 5, SK);
-      pixelRect(bx+13, by+30, 7, 2, BL);
-    }
-  } else {
-    // ジャンプ：前足膝上げ、後足後ろ伸ばし
-    pixelRect(bx+14, by+24, 4, 7, SK);        // 前脚（膝上げ）
-    pixelRect(bx+15, by+29, 6, 2, BL);        // 前靴
-    pixelRect(bx+4,  by+26, 4, 5, SK);        // 後脚（伸ばし）
-    pixelRect(bx+2,  by+29, 5, 2, BL);        // 後靴
-  }
+  if      (selectedChar === 0) drawCharWarrior  (0, 0, sh, runPhase, p.onGround);
+  else if (selectedChar === 1) drawCharWhiteMage(0, 0, sh, runPhase, p.onGround);
+  else                         drawCharBlackMage(0, 0, sh, runPhase, p.onGround);
 
   ctx.restore();
 }
 
+// ---- （旧猫耳セーラーコード削除済み） ----
 // ---- 障害物描画 ----
 function drawObstacle(o) {
   if (o.type === 'ground') {
@@ -1031,18 +1149,50 @@ function drawHUD() {
 // ---- タイトル / ゲームオーバー ----
 function drawOverlay() {
   if (state === 'idle') {
-    ctx.fillStyle = 'rgba(0,0,0,0.55)';
+    const CNAMES = ['SPORTS', 'SEIFUKU', 'GOTHIC'];
+    ctx.fillStyle = 'rgba(0,0,0,0.58)';
     ctx.fillRect(0, 0, W, H);
     ctx.textAlign = 'center';
-    ctx.font = 'bold 36px "Courier New"';
+
+    // タイトル
+    ctx.font = 'bold 34px "Courier New"';
     ctx.fillStyle = C.score;
-    ctx.fillText('PIXEL RUNNER', W/2, H/2 - 30);
-    ctx.font = '18px "Courier New"';
-    ctx.fillStyle = '#ccc';
-    ctx.fillText('SPACE / CLICK でスタート', W/2, H/2 + 10);
-    ctx.font = '13px "Courier New"';
-    ctx.fillStyle = '#888';
-    ctx.fillText('2段ジャンプ対応  •  速度は徐々に上昇', W/2, H/2 + 38);
+    ctx.fillText('PIXEL RUNNER', W/2, 34);
+
+    // キャラ選択ガイド
+    ctx.font = '12px "Courier New"';
+    ctx.fillStyle = '#777';
+    ctx.fillText('← → でキャラクター選択', W/2, 58);
+
+    // キャラプレビュー（2×スケール）
+    const ph = Math.floor(frame / 6) % 4;
+    ctx.save();
+    ctx.translate(W/2 - 24, 68);
+    ctx.scale(2, 2);
+    if      (selectedChar === 0) drawCharWarrior  (0, 0, 32, ph, true);
+    else if (selectedChar === 1) drawCharWhiteMage(0, 0, 32, ph, true);
+    else                         drawCharBlackMage(0, 0, 32, ph, true);
+    ctx.restore();
+
+    // 左右矢印
+    ctx.font = 'bold 22px "Courier New"';
+    ctx.fillStyle = '#aaaaaa';
+    ctx.fillText('◀', W/2 - 76, 102);   // 左矢印
+    ctx.fillText('▶', W/2 + 76, 102);   // 右矢印
+
+    // キャラ名
+    ctx.font = 'bold 15px "Courier New"';
+    ctx.fillStyle = '#ffdd44';
+    ctx.fillText(CNAMES[selectedChar], W/2, 148);
+
+    // スタート案内
+    ctx.font = '16px "Courier New"';
+    ctx.fillStyle = '#cccccc';
+    ctx.fillText('SPACE / CLICK でスタート', W/2, 176);
+    ctx.font = '11px "Courier New"';
+    ctx.fillStyle = '#555555';
+    ctx.fillText('2段ジャンプ対応  •  速度は徐々に上昇', W/2, 198);
+
     ctx.textAlign = 'left';
   }
 
