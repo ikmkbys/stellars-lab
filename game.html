@@ -1297,7 +1297,7 @@ let bgmLoopId    = null;
 let soundEnabled = true;
 
 // サウンドボタンの当たり判定領域
-const SND_BTN = { x: 8, y: H-28, w: 54, h: 20 };
+const SND_BTN = { x: 8, y: 28, w: 54, h: 20 };  // SPDバーの直下（上端配置でiframe内でも見える）
 
 function scheduleBGMLoop(startTime) {
   if (!bgmPlaying) return;
