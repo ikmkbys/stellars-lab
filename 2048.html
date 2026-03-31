@@ -95,27 +95,55 @@
   }
   .tile-high { background: rgba(255,230,255,0.92); color: #050510; font-size: 10px; box-shadow: 0 0 20px rgba(255,200,255,0.8); }
 
-  /* ── 右: インフォエリア ── */
-  #info-area { flex: 1; display: flex; flex-direction: column; gap: 10px; height: 280px; justify-content: center; }
+  /* ── 右: インフォエリア（2カラム） ── */
+  #info-area { flex: 1; display: flex; flex-direction: row; gap: 16px; height: 280px; align-items: center; }
+
+  /* 左列: タイトル・スコア・ボタン */
+  #info-left { display: flex; flex-direction: column; gap: 10px; justify-content: center; flex: 0 0 160px; }
 
   #title { font-size: 28px; font-weight: bold; letter-spacing: 3px; color: #00ffff; text-shadow: 0 0 8px rgba(0,255,255,0.8), 0 0 20px rgba(0,200,255,0.5); line-height: 1; }
   #title-sub { font-size: 9px; letter-spacing: 4px; color: rgba(0,200,255,0.5); margin-top: 2px; }
 
-  #score-block { display: flex; gap: 14px; }
-  .score-box { background: rgba(10,10,50,0.8); border: 1px solid rgba(0,200,255,0.25); border-radius: 4px; padding: 5px 10px; min-width: 90px; box-shadow: 0 0 8px rgba(0,150,255,0.1); }
+  #score-block { display: flex; gap: 8px; }
+  .score-box { background: rgba(10,10,50,0.8); border: 1px solid rgba(0,200,255,0.25); border-radius: 4px; padding: 5px 8px; min-width: 70px; box-shadow: 0 0 8px rgba(0,150,255,0.1); }
   .score-label { font-size: 9px; letter-spacing: 2px; color: rgba(0,200,255,0.55); }
-  .score-value { font-size: 18px; font-weight: bold; color: #00ffff; text-shadow: 0 0 8px rgba(0,255,255,0.6); line-height: 1.2; letter-spacing: 1px; }
+  .score-value { font-size: 16px; font-weight: bold; color: #00ffff; text-shadow: 0 0 8px rgba(0,255,255,0.6); line-height: 1.2; letter-spacing: 1px; }
 
   #new-game-btn {
     background: rgba(0,30,60,0.8); border: 1px solid rgba(0,200,255,0.5); color: #00ffff;
     font-family: 'Courier New', monospace; font-size: 11px; letter-spacing: 3px;
-    padding: 7px 14px; cursor: pointer; border-radius: 3px; transition: all 0.2s ease;
-    text-shadow: 0 0 6px rgba(0,255,255,0.5); box-shadow: 0 0 10px rgba(0,150,255,0.15); align-self: flex-start;
+    padding: 7px 0; cursor: pointer; border-radius: 3px; transition: all 0.2s ease;
+    text-shadow: 0 0 6px rgba(0,255,255,0.5); box-shadow: 0 0 10px rgba(0,150,255,0.15); width: 100%;
   }
   #new-game-btn:hover { background: rgba(0,60,100,0.9); border-color: rgba(0,255,255,0.8); box-shadow: 0 0 16px rgba(0,200,255,0.4); }
   #new-game-btn:active { transform: scale(0.97); }
 
-  #controls-info { font-size: 9px; color: rgba(150,180,255,0.45); letter-spacing: 1px; line-height: 1.7; border-left: 2px solid rgba(0,200,255,0.2); padding-left: 8px; }
+  /* 右列: HOW TO PLAY */
+  #info-right {
+    flex: 1;
+    height: 240px;
+    background: rgba(10,10,40,0.6);
+    border: 1px solid rgba(0,200,255,0.15);
+    border-radius: 6px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+  }
+  #howto-title {
+    font-size: 9px; letter-spacing: 4px; color: rgba(0,200,255,0.7);
+    border-bottom: 1px solid rgba(0,200,255,0.15); padding-bottom: 6px; margin-bottom: 2px;
+  }
+  .howto-row {
+    display: flex; align-items: flex-start; gap: 8px;
+    font-size: 10px; color: rgba(180,200,255,0.6); letter-spacing: 0.5px; line-height: 1.4;
+  }
+  .howto-icon { font-size: 14px; flex-shrink: 0; margin-top: -1px; }
+  .howto-keys {
+    font-size: 10px; color: rgba(150,180,255,0.35); letter-spacing: 1px; margin-top: 6px;
+    border-top: 1px solid rgba(0,200,255,0.1); padding-top: 6px;
+  }
 
   /* オーバーレイ */
   #overlay {
@@ -145,25 +173,30 @@
   </div>
 
   <div id="info-area">
-    <div>
-      <div id="title">2048</div>
-      <div id="title-sub">// STELLAR SYSTEM v1.0</div>
+
+    <!-- 左列: タイトル・スコア・ボタン -->
+    <div id="info-left">
+      <div>
+        <div id="title">2048</div>
+        <div id="title-sub">// STELLAR SYSTEM v1.0</div>
+      </div>
+      <div id="score-block">
+        <div class="score-box"><div class="score-label">SCR:</div><div class="score-value" id="score-display">0</div></div>
+        <div class="score-box"><div class="score-label">BEST:</div><div class="score-value" id="best-display">0</div></div>
+      </div>
+      <button id="new-game-btn">[ NEW GAME ]</button>
     </div>
-    <div id="score-block">
-      <div class="score-box"><div class="score-label">SCR:</div><div class="score-value" id="score-display">0</div></div>
-      <div class="score-box"><div class="score-label">BEST:</div><div class="score-value" id="best-display">0</div></div>
+
+    <!-- 右列: HOW TO PLAY -->
+    <div id="info-right">
+      <div id="howto-title">HOW TO PLAY</div>
+      <div class="howto-row"><span class="howto-icon">🕹️</span><span>矢印キー or スワイプで<br>全タイルが一斉に移動</span></div>
+      <div class="howto-row"><span class="howto-icon">💥</span><span>同じ数字がぶつかると<br>合体して数字が2倍に</span></div>
+      <div class="howto-row"><span class="howto-icon">✨</span><span>移動のたびに新タイルが<br>空きマスに1個出現</span></div>
+      <div class="howto-row"><span class="howto-icon">🎯</span><span><span style="color:#00ffcc">2048</span> を作ればクリア！<br>動けなくなるとゲームオーバー</span></div>
+      <div class="howto-keys">↑ ↓ ← →  ARROW KEYS / SWIPE</div>
     </div>
-    <button id="new-game-btn">[ NEW GAME ]</button>
-    <div id="controls-info">
-      ↑↓←→ ARROW KEYS / SWIPE<br>
-      <br>
-      <span style="color:rgba(0,200,255,0.7);">HOW TO PLAY</span><br>
-      · 押すと全タイルが一斉に移動<br>
-      · 同じ数字がぶつかると合体して2倍<br>
-      · 移動後に新タイルが1個出現<br>
-      · 2048 を作れたらクリア！<br>
-      · 動けなくなるとゲームオーバー
-    </div>
+
   </div>
 </div>
 
