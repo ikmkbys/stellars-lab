@@ -99,12 +99,13 @@
   }
 
   .tile.new {
-    animation: tileAppear 0.15s ease forwards;
+    animation: tileAppear 0.25s ease forwards;
   }
 
   @keyframes tileAppear {
-    from { opacity: 0; transform: scale(0.6); }
-    to   { opacity: 1; transform: scale(1); }
+    0%   { opacity: 0; transform: scale(0); }
+    60%  { opacity: 1; transform: scale(1.2); }
+    100% { opacity: 1; transform: scale(1); }
   }
 
   .tile-0    { background: transparent; border-color: transparent; }
@@ -318,8 +319,9 @@
       ↑↓←→ ARROW KEYS / SWIPE<br>
       <br>
       <span style="color:rgba(0,200,255,0.7);">HOW TO PLAY</span><br>
-      · 同じ数字のタイルをぶつけると合体<br>
-      · 合体すると数字が2倍になる<br>
+      · 押すと全タイルが一斉に移動<br>
+      · 同じ数字がぶつかると合体して2倍<br>
+      · 移動後に新タイルが1個出現<br>
       · 2048 を作れたらクリア！<br>
       · 動けなくなるとゲームオーバー
     </div>
