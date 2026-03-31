@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2048 // STELLAR SYS</title>
+<style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    width: 800px;
+    height: 300px;
+    overflow: hidden;
+    background: #050510;
+    font-family: 'Courier New', monospace;
+    color: #c0d4ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ── レイアウト ── */
+  #app {
+    width: 800px;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    padding: 10px 14px;
+    gap: 16px;
+  }
+
+  /* ── 左: グリッドエリア ── */
+  #grid-area {
+    flex: 0 0 256px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+
+  #grid-container {
+    position: relative;
+    width: 248px;
+    height: 248px;
+    background: rgba(10, 10, 40, 0.8);
+    border: 1px solid rgba(100, 120, 220, 0.35);
+    border-radius: 6px;
+    padding: 6px;
+    box-shadow:
+      0 0 12px rgba(0, 150, 255, 0.12),
+      inset 0 0 20px rgba(0, 0, 60, 0.6);
+  }
+
+  /* 背景セル */
+  #grid-bg {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    gap: 5px;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0; left: 0;
+    padding: 6px;
+  }
+
+  .bg-cell {
+    background: rgba(20, 20, 60, 0.5);
+    border: 1px solid rgba(60, 80, 160, 0.2);
+    border-radius: 3px;
+  }
+
+  /* タイルレイヤー */
+  #grid-tiles {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    gap: 5px;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    z-index: 1;
+  }
+
+  .tile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+    font-weight: bold;
+    font-size: 18px;
+    letter-spacing: 0.5px;
+    transition: opacity 0.12s ease, transform 0.12s ease;
+    border: 1px solid rgba(255,255,255,0.12);
+  }
+
+  .tile.new {
+    animation: tileAppear 0.15s ease forwards;
+  }
+
+  @keyframes tileAppear {
+    from { opacity: 0; transform: scale(0.6); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+
+  .tile-0    { background: transparent; border-color: transparent; }
+  .tile-2    { background: rgba(20, 40, 100, 0.75);   color: #8ab0ff; box-shadow: 0 0 6px rgba(80,120,255,0.3); font-size: 18px; }
+  .tile-4    { background: rgba(40, 20, 110, 0.80);   color: #a070ff; box-shadow: 0 0 6px rgba(120,80,255,0.3); font-size: 18px; }
+  .tile-8    { background: rgba(80, 20, 120, 0.85);   color: #cc60ff; box-shadow: 0 0 8px rgba(180,60,255,0.35); font-size: 18px; }
+  .tile-16   { background: rgba(140, 20, 100, 0.85);  color: #ff50cc; box-shadow: 0 0 8px rgba(255,60,200,0.4);  font-size: 16px; }
+  .tile-32   { background: rgba(0,  100, 120, 0.85);  color: #00ffee; box-shadow: 0 0 10px rgba(0,240,220,0.45); font-size: 16px; }
+  .tile-64   { background: rgba(0,  120, 160, 0.85);  color: #40d4ff; box-shadow: 0 0 10px rgba(40,200,255,0.45); font-size: 16px; }
+  .tile-128  { background: rgba(0,  120,  60, 0.85);  color: #40ff90; box-shadow: 0 0 12px rgba(40,255,120,0.5);  font-size: 14px; }
+  .tile-256  { background: rgba(60, 140,   0, 0.85);  color: #aaff40; box-shadow: 0 0 12px rgba(160,255,40,0.5);  font-size: 14px; }
+  .tile-512  { background: rgba(160, 140,  0, 0.85);  color: #ffee40; box-shadow: 0 0 14px rgba(255,230,40,0.55); font-size: 14px; }
+  .tile-1024 { background: rgba(180,  80,  0, 0.85);  color: #ff9020; box-shadow: 0 0 14px rgba(255,140,20,0.6);  font-size: 12px; }
+  .tile-2048 {
+    background: rgba(240, 240, 255, 0.92);
+    color: #050510;
+    font-size: 12px;
+    box-shadow:
+      0 0 20px rgba(255,255,255,0.9),
+      0 0 40px rgba(200,220,255,0.7),
+      0 0 60px rgba(150,180,255,0.4);
+    text-shadow: none;
+  }
+  .tile-high {
+    background: rgba(255, 230, 255, 0.92);
+    color: #050510;
+    font-size: 10px;
+    box-shadow: 0 0 20px rgba(255,200,255,0.8);
+  }
+
+  /* ── 右: インフォエリア ── */
+  #info-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    height: 280px;
+    justify-content: center;
+  }
+
+  /* タイトル */
+  #title {
+    font-size: 28px;
+    font-weight: bold;
+    letter-spacing: 3px;
+    color: #00ffff;
+    text-shadow:
+      0 0 8px rgba(0,255,255,0.8),
+      0 0 20px rgba(0,200,255,0.5);
+    line-height: 1;
+  }
+
+  #title-sub {
+    font-size: 9px;
+    letter-spacing: 4px;
+    color: rgba(0, 200, 255, 0.5);
+    margin-top: 2px;
+  }
+
+  /* スコア */
+  #score-block {
+    display: flex;
+    gap: 14px;
+  }
+
+  .score-box {
+    background: rgba(10, 10, 50, 0.8);
+    border: 1px solid rgba(0, 200, 255, 0.25);
+    border-radius: 4px;
+    padding: 5px 10px;
+    min-width: 90px;
+    box-shadow: 0 0 8px rgba(0, 150, 255, 0.1);
+  }
+
+  .score-label {
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: rgba(0, 200, 255, 0.55);
+  }
+
+  .score-value {
+    font-size: 18px;
+    font-weight: bold;
+    color: #00ffff;
+    text-shadow: 0 0 8px rgba(0, 255, 255, 0.6);
+    line-height: 1.2;
+    letter-spacing: 1px;
+  }
+
+  /* New Game ボタン */
+  #new-game-btn {
+    background: rgba(0, 30, 60, 0.8);
+    border: 1px solid rgba(0, 200, 255, 0.5);
+    color: #00ffff;
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    padding: 7px 14px;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: all 0.2s ease;
+    text-shadow: 0 0 6px rgba(0, 255, 255, 0.5);
+    box-shadow: 0 0 10px rgba(0, 150, 255, 0.15);
+    align-self: flex-start;
+  }
+
+  #new-game-btn:hover {
+    background: rgba(0, 60, 100, 0.9);
+    border-color: rgba(0, 255, 255, 0.8);
+    box-shadow: 0 0 16px rgba(0, 200, 255, 0.4);
+  }
+
+  #new-game-btn:active {
+    transform: scale(0.97);
+  }
+
+  /* 操作説明 */
+  #controls-info {
+    font-size: 9px;
+    color: rgba(150, 180, 255, 0.45);
+    letter-spacing: 1px;
+    line-height: 1.7;
+    border-left: 2px solid rgba(0, 200, 255, 0.2);
+    padding-left: 8px;
+  }
+
+  /* オーバーレイ（ゲームオーバー・2048達成） */
+  #overlay {
+    display: none;
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(5, 5, 30, 0.88);
+    border-radius: 6px;
+    z-index: 10;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    backdrop-filter: blur(2px);
+  }
+
+  #overlay.show {
+    display: flex;
+  }
+
+  #overlay-msg {
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 3px;
+    text-align: center;
+    line-height: 1.4;
+  }
+
+  #overlay-sub {
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: rgba(200, 220, 255, 0.5);
+  }
+
+  .overlay-gameover #overlay-msg {
+    color: #ff4060;
+    text-shadow: 0 0 12px rgba(255, 60, 80, 0.8);
+  }
+
+  .overlay-win #overlay-msg {
+    color: #00ffff;
+    text-shadow: 0 0 16px rgba(0, 255, 255, 0.9), 0 0 30px rgba(0, 200, 255, 0.5);
+  }
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- 左: グリッド -->
+  <div id="grid-area">
+    <div id="grid-container">
+      <!-- 背景セル -->
+      <div id="grid-bg"></div>
+      <!-- タイルグリッド -->
+      <div id="grid-tiles"></div>
+      <!-- オーバーレイ -->
+      <div id="overlay">
+        <div id="overlay-msg"></div>
+        <div id="overlay-sub"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 右: 情報 -->
+  <div id="info-area">
+    <div>
+      <div id="title">2048</div>
+      <div id="title-sub">// STELLAR SYSTEM v1.0</div>
+    </div>
+
+    <div id="score-block">
+      <div class="score-box">
+        <div class="score-label">SCR:</div>
+        <div class="score-value" id="score-display">0</div>
+      </div>
+      <div class="score-box">
+        <div class="score-label">BEST:</div>
+        <div class="score-value" id="best-display">0</div>
+      </div>
+    </div>
+
+    <button id="new-game-btn">[ NEW GAME ]</button>
+
+    <div id="controls-info">
+      ARROW KEYS — move tiles<br>
+      SWIPE — touch control<br>
+      MERGE same numbers to win
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function() {
+  'use strict';
+
+  const GRID_SIZE = 4;
+  let board = [];        // 4×4 数値配列
+  let score = 0;
+  let bestScore = parseInt(localStorage.getItem('2048_best') || '0', 10);
+  let gameOver = false;
+  let hasWon = false;
+  let winShown = false;  // 2048達成メッセージを一度だけ表示
+
+  // DOM
+  const gridTiles   = document.getElementById('grid-tiles');
+  const gridBg      = document.getElementById('grid-bg');
+  const scoreEl     = document.getElementById('score-display');
+  const bestEl      = document.getElementById('best-display');
+  const newGameBtn  = document.getElementById('new-game-btn');
+  const overlay     = document.getElementById('overlay');
+  const overlayMsg  = document.getElementById('overlay-msg');
+  const overlaySub  = document.getElementById('overlay-sub');
+
+  /* ── 初期化 ── */
+  function init() {
+    board = Array.from({length: GRID_SIZE}, () => Array(GRID_SIZE).fill(0));
+    score = 0;
+    gameOver = false;
+    hasWon = false;
+    winShown = false;
+    hideOverlay();
+    buildBgCells();
+    addRandomTile();
+    addRandomTile();
+    updateUI();
+  }
+
+  function buildBgCells() {
+    gridBg.innerHTML = '';
+    for (let i = 0; i < GRID_SIZE * GRID_SIZE; i++) {
+      const c = document.createElement('div');
+      c.className = 'bg-cell';
+      gridBg.appendChild(c);
+    }
+  }
+
+  /* ── タイル追加 ── */
+  function addRandomTile(isNew = true) {
+    const empty = [];
+    for (let r = 0; r < GRID_SIZE; r++)
+      for (let c = 0; c < GRID_SIZE; c++)
+        if (board[r][c] === 0) empty.push([r, c]);
+    if (empty.length === 0) return;
+    const [r, c] = empty[Math.floor(Math.random() * empty.length)];
+    board[r][c] = Math.random() < 0.9 ? 2 : 4;
+    if (isNew) markNew(r, c);
+  }
+
+  const newCells = new Set();
+  function markNew(r, c) { newCells.add(r * GRID_SIZE + c); }
+
+  /* ── 描画 ── */
+  function updateUI() {
+    // スコア
+    scoreEl.textContent = score;
+    if (score > bestScore) {
+      bestScore = score;
+      localStorage.setItem('2048_best', bestScore);
+    }
+    bestEl.textContent = bestScore;
+
+    // タイル
+    gridTiles.innerHTML = '';
+    for (let r = 0; r < GRID_SIZE; r++) {
+      for (let c = 0; c < GRID_SIZE; c++) {
+        const val = board[r][c];
+        const tile = document.createElement('div');
+        const idx = r * GRID_SIZE + c;
+        let cls = 'tile tile-' + (val > 2048 ? 'high' : val);
+        if (newCells.has(idx)) cls += ' new';
+        tile.className = cls;
+        tile.textContent = val > 0 ? val : '';
+        gridTiles.appendChild(tile);
+      }
+    }
+    newCells.clear();
+  }
+
+  /* ── ゲームロジック ── */
+  // 1行を左に寄せてマージ（戻り値: [新しい行, 加点]）
+  function slideRow(row) {
+    let arr = row.filter(v => v !== 0);
+    let added = 0;
+    for (let i = 0; i < arr.length - 1; i++) {
+      if (arr[i] === arr[i + 1]) {
+        arr[i] *= 2;
+        added += arr[i];
+        arr.splice(i + 1, 1);
+        i++; // マージ済みをスキップ
+      }
+    }
+    while (arr.length < GRID_SIZE) arr.push(0);
+    return [arr, added];
+  }
+
+  function rotateRight(b) {
+    const n = b.length;
+    return b[0].map((_, ci) => b.map((row, ri) => b[n-1-ri][ci]));
+  }
+
+  function rotateLeft(b) {
+    const n = b.length;
+    return b[0].map((_, ci) => b.map((row, ri) => row[n-1-ci]));
+  }
+
+  // 方向: 0=左, 1=右, 2=上, 3=下
+  function move(dir) {
+    if (gameOver) return;
+
+    let b = board.map(r => [...r]);
+
+    // 全方向を「左スライド」に統一して処理
+    if (dir === 1) b = b.map(r => [...r].reverse());
+    else if (dir === 2) b = rotateRight(b);
+    else if (dir === 3) b = rotateLeft(b);
+
+    let totalAdded = 0;
+    let changed = false;
+    const newBoard = b.map((row, ri) => {
+      const [newRow, added] = slideRow(row);
+      totalAdded += added;
+      if (newRow.some((v, i) => v !== b[ri][i])) changed = true;
+      return newRow;
+    });
+
+    if (!changed) return;
+
+    let result = newBoard;
+    if (dir === 1) result = result.map(r => [...r].reverse());
+    else if (dir === 2) result = rotateLeft(result);
+    else if (dir === 3) result = rotateRight(result);
+
+    board = result;
+    score += totalAdded;
+    addRandomTile(true);
+    updateUI();
+    checkState();
+  }
+
+  function checkState() {
+    // 2048達成チェック
+    if (!winShown) {
+      for (let r = 0; r < GRID_SIZE; r++)
+        for (let c = 0; c < GRID_SIZE; c++)
+          if (board[r][c] >= 2048) {
+            winShown = true;
+            showOverlay('win',
+              'SYSTEM OVERRIDE',
+              '[ CONTINUE OR NEW GAME ]'
+            );
+            setTimeout(hideOverlay, 2200);
+            return;
+          }
+    }
+
+    // ゲームオーバーチェック
+    if (!canMove()) {
+      gameOver = true;
+      showOverlay('gameover',
+        'GAME OVER\nSYSTEM HALT',
+        '[ PRESS NEW GAME ]'
+      );
+    }
+  }
+
+  function canMove() {
+    for (let r = 0; r < GRID_SIZE; r++)
+      for (let c = 0; c < GRID_SIZE; c++) {
+        if (board[r][c] === 0) return true;
+        if (c + 1 < GRID_SIZE && board[r][c] === board[r][c+1]) return true;
+        if (r + 1 < GRID_SIZE && board[r][c] === board[r+1][c]) return true;
+      }
+    return false;
+  }
+
+  /* ── オーバーレイ ── */
+  function showOverlay(type, msg, sub) {
+    overlay.className = 'show overlay-' + type;
+    overlayMsg.textContent = msg;
+    overlaySub.textContent = sub;
+  }
+
+  function hideOverlay() {
+    overlay.className = '';
+  }
+
+  /* ── キーボード ── */
+  document.addEventListener('keydown', e => {
+    const map = {
+      ArrowLeft: 0, ArrowRight: 1, ArrowUp: 2, ArrowDown: 3
+    };
+    if (e.key in map) {
+      e.preventDefault();
+      move(map[e.key]);
+    }
+  });
+
+  /* ── タッチスワイプ ── */
+  let touchStartX = 0, touchStartY = 0;
+
+  document.addEventListener('touchstart', e => {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+
+  document.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    const dy = e.changedTouches[0].clientY - touchStartY;
+    const absDx = Math.abs(dx), absDy = Math.abs(dy);
+    if (Math.max(absDx, absDy) < 20) return; // 短すぎる
+    if (absDx > absDy) move(dx < 0 ? 0 : 1);
+    else               move(dy < 0 ? 2 : 3);
+  }, { passive: true });
+
+  /* ── New Game ── */
+  newGameBtn.addEventListener('click', init);
+
+  /* ── 起動 ── */
+  bestEl.textContent = bestScore;
+  init();
+
+})();
+</script>
+</body>
+</html>
