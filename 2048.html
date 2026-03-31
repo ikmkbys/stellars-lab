@@ -190,11 +190,11 @@
     <!-- 右列: HOW TO PLAY -->
     <div id="info-right">
       <div id="howto-title">HOW TO PLAY</div>
-      <div class="howto-row"><span class="howto-icon">🕹️</span><span>矢印キー or スワイプで<br>全タイルが一斉に移動</span></div>
-      <div class="howto-row"><span class="howto-icon">💥</span><span>同じ数字がぶつかると<br>合体して数字が2倍に</span></div>
-      <div class="howto-row"><span class="howto-icon">✨</span><span>移動のたびに新タイルが<br>空きマスに1個出現</span></div>
-      <div class="howto-row"><span class="howto-icon">🎯</span><span><span style="color:#00ffcc">2048</span> を作ればクリア！<br>動けなくなるとゲームオーバー</span></div>
-      <div class="howto-keys">↑ ↓ ← →  ARROW KEYS / SWIPE</div>
+      <div class="howto-row"><span class="howto-icon">🕹️</span><span id="h1"></span></div>
+      <div class="howto-row"><span class="howto-icon">💥</span><span id="h2"></span></div>
+      <div class="howto-row"><span class="howto-icon">✨</span><span id="h3"></span></div>
+      <div class="howto-row"><span class="howto-icon">🎯</span><span id="h4"></span></div>
+      <div class="howto-keys" id="h5"></div>
     </div>
 
   </div>
@@ -457,6 +457,27 @@
   }, { passive: true });
 
   document.getElementById('new-game-btn').addEventListener('click', init);
+
+  // 言語切り替え（?lang=en で英語）
+  const isEn = new URLSearchParams(location.search).get('lang') === 'en';
+  const i18n = {
+    ja: {
+      h1: '矢印キー or スワイプで<br>全タイルが一斉に移動',
+      h2: '同じ数字がぶつかると<br>合体して数字が2倍に',
+      h3: '移動のたびに新タイルが<br>空きマスに1個出現',
+      h4: '<span style="color:#00ffcc">2048</span> を作ればクリア！<br>動けなくなるとゲームオーバー',
+      h5: '↑ ↓ ← →  ARROW KEYS / SWIPE',
+    },
+    en: {
+      h1: 'Arrow keys or swipe to<br>slide all tiles at once',
+      h2: 'Same numbers collide &amp;<br>merge into double',
+      h3: 'A new tile appears in<br>a random empty cell',
+      h4: 'Reach <span style="color:#00ffcc">2048</span> to win!<br>No moves left = game over',
+      h5: '↑ ↓ ← →  ARROW KEYS / SWIPE',
+    },
+  };
+  const t = isEn ? i18n.en : i18n.ja;
+  ['h1','h2','h3','h4','h5'].forEach(k => { document.getElementById(k).innerHTML = t[k]; });
 
   bestEl.textContent = bestScore;
   init();
