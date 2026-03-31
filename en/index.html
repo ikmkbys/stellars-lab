@@ -12,6 +12,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../style.css">
+  <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
 
@@ -26,7 +27,8 @@
       <li><a href="#products">Products</a></li>
       <li><a href="#tools">Tools</a></li>
       <li><a href="#about">About</a></li>
-      <li><a href="/privacy">Privacy</a></li>
+      <li><a href="#playground">Playground</a></li>
+      <li><a href="/en/privacy">Privacy</a></li>
       <li><a href="/" class="lang-toggle">🇯🇵 JA</a></li>
     </ul>
   </nav>
@@ -90,6 +92,21 @@
       </div>
     </div>
 
+    <!-- FLOW YOTEI -->
+    <div class="tool-card">
+      <div class="tool-left">
+        <span class="tool-icon">📅</span>
+        <div>
+          <div class="tool-name">FLOW YOTEI</div>
+          <div class="tool-desc">No sign-up needed. Share a URL and let people pick a time — scheduling made simple.</div>
+        </div>
+      </div>
+      <div class="tool-right">
+        <span class="badge badge-free">Free</span>
+        <a href="https://flow-yotei.vercel.app" target="_blank" rel="noopener" class="tool-link">Try it →</a>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -115,6 +132,25 @@
         <span class="profile-tag">Vibe coding</span>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ===== Playground ===== -->
+<section class="section" id="playground">
+  <p class="section-label">Playground</p>
+  <h2>Mini Game</h2>
+  <p class="section-desc">A space runner built between coding sessions. Press Space (or tap) to jump.</p>
+  <div class="game-wrapper">
+    <iframe
+      src="../game.html"
+      width="800"
+      height="300"
+      scrolling="no"
+      frameborder="0"
+      title="Stellars Runner"
+      allow="autoplay"
+    ></iframe>
+    <p class="game-hint">Click first to focus · SPACE to jump · Hold for higher jump</p>
   </div>
 </section>
 
