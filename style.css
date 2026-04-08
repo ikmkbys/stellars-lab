@@ -174,14 +174,12 @@ header {
 .product-card.polaris  { border-top: 3px solid var(--indigo); }
 
 .product-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
+  width: 72px;
+  height: 72px;
+  border-radius: 14px;
+  display: block;
   margin-bottom: 20px;
+  object-fit: cover;
 }
 
 .product-card.notipop .product-icon { background: var(--gold-soft); }
