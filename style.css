@@ -210,8 +210,9 @@ header {
   margin-bottom: 16px;
 }
 
-.badge-free   { background: var(--gold-soft);   color: var(--gold);   border: 1px solid rgba(201,168,76,0.3); }
-.badge-paid   { background: var(--indigo-soft); color: var(--indigo); border: 1px solid rgba(99,102,241,0.3); }
+.badge-free    { background: var(--gold-soft);   color: var(--gold);   border: 1px solid rgba(201,168,76,0.3); }
+.badge-paid    { background: var(--indigo-soft); color: var(--indigo); border: 1px solid rgba(99,102,241,0.3); }
+.badge-consult { background: rgba(255,255,255,0.05); color: var(--muted); border: 1px solid var(--border); }
 
 .product-link {
   display: inline-flex;
