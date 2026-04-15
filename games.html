@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ARCADE // STELLARS LAB</title>
+<meta name="description" content="Stellars Lab の息抜きゲーム集。PIXEL RUNNER・2048 STELLAR GRID・CODE BREAKER。">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #050510;
+    font-family: 'Courier New', monospace;
+    color: #c0d4ff;
+    min-height: 100vh;
+  }
+
+  /* ── ヘッダー ── */
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    border-bottom: 1px solid rgba(100,120,220,0.2);
+  }
+
+  .logo {
+    font-size: 13px;
+    letter-spacing: 4px;
+    color: #8090c0;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .logo:hover { color: #c0d4ff; }
+  .logo .star { color: #6070d0; margin-right: 6px; }
+
+  .page-title {
+    font-size: 20px;
+    letter-spacing: 8px;
+    color: #c0d4ff;
+    text-shadow: 0 0 20px rgba(100,120,255,0.4);
+  }
+
+  /* ── メイン ── */
+  main {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 60px 32px 80px;
+  }
+
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: #4050a0;
+    margin-bottom: 10px;
+  }
+
+  h1 {
+    font-size: 14px;
+    letter-spacing: 5px;
+    color: #8090c0;
+    margin-bottom: 8px;
+    font-weight: normal;
+  }
+
+  .section-desc {
+    font-size: 13px;
+    color: #506080;
+    letter-spacing: 1px;
+    margin-bottom: 48px;
+    line-height: 1.8;
+  }
+
+  /* ── ゲームカード ── */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+  }
+
+  .card {
+    border: 1px solid rgba(80,100,200,0.25);
+    border-radius: 8px;
+    background: rgba(10,10,40,0.6);
+    overflow: hidden;
+    transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+  }
+  .card:hover {
+    border-color: rgba(100,140,255,0.5);
+    box-shadow: 0 0 24px rgba(60,80,200,0.2);
+    transform: translateY(-2px);
+  }
+
+  .card-preview {
+    width: 100%;
+    aspect-ratio: 8/3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    background: rgba(5,5,20,0.8);
+    border-bottom: 1px solid rgba(80,100,200,0.15);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* カード別アクセントカラー */
+  .card.runner .card-preview  { background: radial-gradient(ellipse at center, rgba(40,30,5,0.8) 0%, rgba(5,5,20,0.9) 70%); }
+  .card.grid2048 .card-preview { background: radial-gradient(ellipse at center, rgba(5,10,40,0.8) 0%, rgba(5,5,20,0.9) 70%); }
+  .card.breaker .card-preview  { background: radial-gradient(ellipse at center, rgba(5,30,10,0.8) 0%, rgba(5,5,20,0.9) 70%); }
+
+  .card-preview-text {
+    font-size: 11px;
+    letter-spacing: 3px;
+    opacity: 0.5;
+    position: absolute;
+    bottom: 10px;
+    right: 14px;
+  }
+  .card.runner  .card-preview-text { color: #f0c040; }
+  .card.grid2048 .card-preview-text { color: #6090ff; }
+  .card.breaker .card-preview-text { color: #40ff90; }
+
+  /* ピクセルランナー プレビュー装飾 */
+  .runner-art {
+    display: flex;
+    align-items: flex-end;
+    gap: 6px;
+    padding-bottom: 8px;
+  }
+  .runner-char {
+    width: 12px; height: 16px;
+    background: #f0c040;
+    box-shadow: 0 0 8px #f0c04066;
+    animation: runnerBob 0.5s ease-in-out infinite alternate;
+  }
+  @keyframes runnerBob {
+    from { transform: translateY(0); }
+    to   { transform: translateY(-4px); }
+  }
+  .runner-obstacle {
+    width: 10px; height: 20px;
+    background: #e05030;
+    box-shadow: 0 0 8px #e0503066;
+  }
+
+  /* 2048 プレビュー装飾 */
+  .grid-art {
+    display: grid;
+    grid-template-columns: repeat(4, 28px);
+    grid-template-rows: repeat(4, 28px);
+    gap: 3px;
+  }
+  .grid-cell {
+    border-radius: 2px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 8px; font-weight: bold;
+  }
+
+  /* CODE BREAKER プレビュー装飾 */
+  .breaker-art {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 80%;
+  }
+  .breaker-word {
+    font-size: 11px;
+    letter-spacing: 2px;
+    padding: 3px 8px;
+    border: 1px solid rgba(64,255,144,0.4);
+    border-radius: 2px;
+    color: #40a060;
+    background: rgba(0,20,8,0.6);
+    width: fit-content;
+    animation: slideLeft 3s linear infinite;
+  }
+  .breaker-word:nth-child(2) { animation-delay: -1s; margin-left: 30%; }
+  .breaker-word:nth-child(3) { animation-delay: -2s; margin-left: 15%; }
+  @keyframes slideLeft {
+    from { transform: translateX(20px); opacity: 0.4; }
+    to   { transform: translateX(-10px); opacity: 1; }
+  }
+
+  .card-body {
+    padding: 20px 22px 22px;
+  }
+
+  .card-tag {
+    font-size: 9px;
+    letter-spacing: 3px;
+    margin-bottom: 8px;
+  }
+  .card.runner  .card-tag { color: #806020; }
+  .card.grid2048 .card-tag { color: #304080; }
+  .card.breaker .card-tag { color: #206040; }
+
+  .card-name {
+    font-size: 18px;
+    letter-spacing: 4px;
+    margin-bottom: 10px;
+    font-weight: normal;
+  }
+  .card.runner  .card-name { color: #f0c040; text-shadow: 0 0 10px #f0c04044; }
+  .card.grid2048 .card-name { color: #8090ff; text-shadow: 0 0 10px #8090ff44; }
+  .card.breaker .card-name { color: #40ff90; text-shadow: 0 0 10px #40ff9044; }
+
+  .card-desc {
+    font-size: 12px;
+    color: #506080;
+    line-height: 1.8;
+    letter-spacing: 0.5px;
+    margin-bottom: 20px;
+  }
+
+  .card-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .card-hint {
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: #304060;
+  }
+
+  .play-btn {
+    display: inline-block;
+    padding: 8px 20px;
+    border-radius: 3px;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-decoration: none;
+    border: 1px solid;
+    transition: all 0.2s;
+  }
+  .card.runner  .play-btn { border-color: #f0c040; color: #f0c040; }
+  .card.grid2048 .play-btn { border-color: #8090ff; color: #8090ff; }
+  .card.breaker .play-btn { border-color: #40ff90; color: #40ff90; }
+
+  .card.runner  .play-btn:hover { background: rgba(240,192,64,0.1);  box-shadow: 0 0 14px rgba(240,192,64,0.2); }
+  .card.grid2048 .play-btn:hover { background: rgba(128,144,255,0.1); box-shadow: 0 0 14px rgba(128,144,255,0.2); }
+  .card.breaker .play-btn:hover { background: rgba(64,255,144,0.1);  box-shadow: 0 0 14px rgba(64,255,144,0.2); }
+
+  /* ── フッター ── */
+  footer {
+    text-align: center;
+    padding: 32px;
+    border-top: 1px solid rgba(80,100,200,0.1);
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: #304060;
+  }
+  footer a { color: #4050a0; text-decoration: none; }
+  footer a:hover { color: #8090c0; }
+
+  /* スキャンライン */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.03) 2px,
+      rgba(0,0,0,0.03) 4px
+    );
+    pointer-events: none;
+    z-index: 100;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="/" class="logo"><span class="star">✦</span>STELLARS LAB</a>
+  <div class="page-title">ARCADE</div>
+  <div style="width:120px"></div>
+</header>
+
+<main>
+  <p class="section-label">PLAYGROUND</p>
+  <h1>息抜きゲーム</h1>
+  <p class="section-desc">開発の合間に作った小さなゲーム。</p>
+
+  <div class="cards">
+
+    <!-- PIXEL RUNNER -->
+    <div class="card runner">
+      <div class="card-preview">
+        <div class="runner-art">
+          <div class="runner-char"></div>
+          <div style="width:40px"></div>
+          <div class="runner-obstacle"></div>
+        </div>
+        <span class="card-preview-text">RUNNER</span>
+      </div>
+      <div class="card-body">
+        <div class="card-tag">ACTION</div>
+        <div class="card-name">PIXEL RUNNER</div>
+        <p class="card-desc">障害物をジャンプで回避し続ける横スクロールランナー。スピードは加速する。</p>
+        <div class="card-meta">
+          <span class="card-hint">SPACE / クリック でジャンプ</span>
+          <a href="game.html" class="play-btn">PLAY →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2048 STELLAR GRID -->
+    <div class="card grid2048">
+      <div class="card-preview">
+        <div class="grid-art" id="grid-art"></div>
+        <span class="card-preview-text">PUZZLE</span>
+      </div>
+      <div class="card-body">
+        <div class="card-tag">PUZZLE</div>
+        <div class="card-name">2048 STELLAR GRID</div>
+        <p class="card-desc">同じ数字のタイルを合わせて 2048 を目指すスライドパズル。サイバー風UI。</p>
+        <div class="card-meta">
+          <span class="card-hint">矢印キー / スワイプ</span>
+          <a href="2048.html" class="play-btn">PLAY →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- CODE BREAKER -->
+    <div class="card breaker">
+      <div class="card-preview">
+        <div class="breaker-art">
+          <div class="breaker-word">function</div>
+          <div class="breaker-word">async</div>
+          <div class="breaker-word">deploy</div>
+        </div>
+        <span class="card-preview-text">TYPING</span>
+      </div>
+      <div class="card-body">
+        <div class="card-tag">TYPING</div>
+        <div class="card-name">CODE BREAKER</div>
+        <p class="card-desc">流れてくるコードワードをタイプして撃墜。スピードとレベルが上がる。</p>
+        <div class="card-meta">
+          <span class="card-hint">キーボード入力 + ENTER</span>
+          <a href="codebreaker.html" class="play-btn">PLAY →</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  <a href="/">← Stellars Lab</a> &nbsp;·&nbsp; © 2025 Stellars Lab
+</footer>
+
+<script>
+// 2048 グリッドプレビュー（静的）
+const cells = [
+  {v:2048,c:'#c8a030'},{v:1024,c:'#a07030'},{v:512,c:'#6060c0'},{v:256,c:'#4050a0'},
+  {v:128,c:'#3040a0'},{v:64,c:'#2030a0'},{v:32,c:'#1530a0'},{v:16,c:'#1020a0'},
+  {v:8,c:'#0a1880'},{v:4,c:'#080e60'},{v:2,c:'#050a40'},{v:0,c:'#0a0a30'},
+  {v:0,c:'#0a0a30'},{v:0,c:'#0a0a30'},{v:0,c:'#0a0a30'},{v:0,c:'#0a0a30'},
+];
+const gridArt = document.getElementById('grid-art');
+cells.forEach(({v, c}) => {
+  const d = document.createElement('div');
+  d.className = 'grid-cell';
+  d.style.background = c;
+  d.style.color = v >= 64 ? '#fff' : '#8090ff';
+  d.textContent = v || '';
+  gridArt.appendChild(d);
+});
+</script>
+
+</body>
+</html>

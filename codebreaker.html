@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CODE BREAKER // STELLARS LAB</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #050510;
+    font-family: 'Courier New', monospace;
+    color: #c0ffc0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    user-select: none;
+  }
+
+  /* ── ヘッダー ── */
+  #header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 24px;
+    background: rgba(5,5,16,0.85);
+    border-bottom: 1px solid rgba(0,255,100,0.15);
+    z-index: 10;
+  }
+
+  #title {
+    font-size: 18px;
+    letter-spacing: 6px;
+    color: #40ff90;
+    text-shadow: 0 0 16px #40ff9066;
+  }
+
+  #back-link {
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: #40a060;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  #back-link:hover { color: #40ff90; }
+
+  /* ── HUD ── */
+  #hud {
+    position: fixed;
+    top: 54px; left: 0; right: 0;
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    padding: 8px 24px;
+    font-size: 12px;
+    letter-spacing: 3px;
+    color: #40a060;
+    z-index: 10;
+  }
+  #hud span { color: #40ff90; font-size: 18px; font-weight: bold; }
+
+  /* ── ゲームフィールド ── */
+  #field {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* 危険ゾーン線 */
+  #danger-line {
+    position: absolute;
+    left: 120px;
+    top: 0; bottom: 0;
+    width: 1px;
+    background: rgba(255, 60, 60, 0.3);
+    z-index: 1;
+  }
+  #danger-label {
+    position: absolute;
+    left: 124px;
+    top: 80px;
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: rgba(255, 60, 60, 0.4);
+    writing-mode: vertical-rl;
+    z-index: 1;
+  }
+
+  /* ── 単語 ── */
+  .word {
+    position: absolute;
+    font-size: 15px;
+    letter-spacing: 2px;
+    padding: 4px 10px;
+    border: 1px solid rgba(0, 200, 80, 0.4);
+    border-radius: 3px;
+    background: rgba(0, 30, 10, 0.7);
+    white-space: nowrap;
+    transition: none;
+    z-index: 2;
+  }
+  .word.targeted {
+    border-color: #40ff90;
+    color: #ffffff;
+    background: rgba(0, 60, 20, 0.85);
+    box-shadow: 0 0 12px rgba(64, 255, 144, 0.4);
+  }
+  .word .typed-chars { color: #40ff90; }
+  .word .remaining-chars { color: #40a060; }
+
+  /* 爆発アニメ */
+  @keyframes explode {
+    0%   { opacity: 1; transform: scale(1); }
+    50%  { opacity: 1; transform: scale(1.4); filter: brightness(3); }
+    100% { opacity: 0; transform: scale(0.5); }
+  }
+  .word.exploding {
+    animation: explode 0.3s ease forwards;
+    pointer-events: none;
+  }
+
+  /* ── 入力欄 ── */
+  #input-area {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 24px;
+    background: rgba(5,5,16,0.9);
+    border-top: 1px solid rgba(0,255,100,0.15);
+    z-index: 10;
+  }
+
+  #prompt {
+    font-size: 14px;
+    letter-spacing: 2px;
+    color: #40a060;
+  }
+
+  #input {
+    flex: 1;
+    max-width: 320px;
+    background: rgba(0,30,10,0.8);
+    border: 1px solid rgba(0,255,100,0.4);
+    border-radius: 3px;
+    color: #40ff90;
+    font-family: 'Courier New', monospace;
+    font-size: 16px;
+    letter-spacing: 3px;
+    padding: 8px 14px;
+    outline: none;
+  }
+  #input:focus { border-color: #40ff90; box-shadow: 0 0 10px rgba(64,255,144,0.3); }
+
+  #input-hint {
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: #306040;
+  }
+
+  /* ── オーバーレイ ── */
+  #overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(5,5,16,0.92);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    z-index: 20;
+  }
+  #overlay h2 {
+    font-size: 32px;
+    letter-spacing: 10px;
+    color: #40ff90;
+    text-shadow: 0 0 30px #40ff9088;
+  }
+  #overlay p {
+    font-size: 13px;
+    letter-spacing: 3px;
+    color: #40a060;
+    line-height: 2;
+    text-align: center;
+  }
+  #overlay .result-score {
+    font-size: 48px;
+    color: #ffffff;
+    text-shadow: 0 0 20px #40ff9066;
+    letter-spacing: 4px;
+  }
+  #overlay .result-sub {
+    font-size: 12px;
+    letter-spacing: 3px;
+    color: #40a060;
+    display: flex;
+    gap: 32px;
+    justify-content: center;
+  }
+  #overlay .result-sub span { color: #c0ffc0; }
+
+  #btn-start {
+    margin-top: 8px;
+    background: transparent;
+    border: 2px solid #40ff90;
+    color: #40ff90;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    letter-spacing: 5px;
+    padding: 12px 32px;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: all 0.2s;
+  }
+  #btn-start:hover {
+    background: rgba(64,255,144,0.1);
+    box-shadow: 0 0 20px rgba(64,255,144,0.3);
+  }
+
+  /* スキャンライン */
+  #scanline {
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.04) 2px,
+      rgba(0,0,0,0.04) 4px
+    );
+    pointer-events: none;
+    z-index: 30;
+  }
+</style>
+</head>
+<body>
+
+<div id="header">
+  <div id="title">CODE BREAKER</div>
+  <a href="games.html" id="back-link">← ARCADE</a>
+</div>
+
+<div id="hud">
+  <div>SCORE &nbsp;<span id="score">0</span></div>
+  <div>WPM &nbsp;<span id="wpm">0</span></div>
+  <div>ACC &nbsp;<span id="acc">-</span></div>
+  <div>LEVEL &nbsp;<span id="level">1</span></div>
+</div>
+
+<div id="field">
+  <div id="danger-line"></div>
+  <div id="danger-label">DANGER ZONE</div>
+</div>
+
+<div id="input-area">
+  <span id="prompt">&gt;_</span>
+  <input type="text" id="input" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="type to target...">
+  <span id="input-hint">ENTER で撃墜</span>
+</div>
+
+<div id="overlay">
+  <h2 id="overlay-title">CODE BREAKER</h2>
+  <p id="overlay-body">流れてくるコードワードをタイプして撃墜せよ。<br>単語が左端の DANGER ZONE を越えたら GAME OVER。</p>
+  <div id="result-area" style="display:none;">
+    <div class="result-score" id="result-score">0</div>
+    <div class="result-sub">
+      <div>WPM <span id="result-wpm">-</span></div>
+      <div>ACC <span id="result-acc">-</span></div>
+      <div>DESTROYED <span id="result-destroyed">0</span></div>
+    </div>
+  </div>
+  <button id="btn-start">START</button>
+</div>
+
+<div id="scanline"></div>
+
+<script>
+const WORDS = [
+  // 短め
+  'null','void','let','var','git','api','css','dom','cli','hex',
+  'ssh','url','cdn','map','set','try','log','get','put',
+  // 中くらい
+  'const','async','await','fetch','class','array','error','debug',
+  'build','token','proxy','cache','event','merge','branch','deploy',
+  'query','index','parse','regex','stack','throw','catch','break',
+  'import','export','module','server','client','socket','render',
+  'filter','reduce','string','number','object','boolean',
+  // 長め
+  'function','promise','request','response','install','package',
+  'interface','extends','prototype','callback','middleware',
+  'component','database','localhost','typescript','javascript',
+  'algorithm','refactor','repository','deployment',
+];
+
+// ── ゲーム状態 ──
+let words = [];        // { el, text, x, y, speed, id }
+let idCounter = 0;
+let score = 0;
+let totalTyped = 0;    // 入力文字数（正確）
+let totalMistakes = 0;
+let destroyedCount = 0;
+let startTime = null;
+let gameRunning = false;
+let gameOver = false;
+let spawnTimer = null;
+let moveTimer = null;
+let level = 1;
+let spawnInterval = 2400;  // ms
+let wordSpeed = 0.45;      // px/frame (60fps想定)
+let frameCount = 0;
+let lastWpmUpdate = 0;
+
+const field = document.getElementById('field');
+const input = document.getElementById('input');
+const overlay = document.getElementById('overlay');
+const btnStart = document.getElementById('btn-start');
+
+const scoreEl  = document.getElementById('score');
+const wpmEl    = document.getElementById('wpm');
+const accEl    = document.getElementById('acc');
+const levelEl  = document.getElementById('level');
+
+const resultArea      = document.getElementById('result-area');
+const resultScore     = document.getElementById('result-score');
+const resultWpm       = document.getElementById('result-wpm');
+const resultAcc       = document.getElementById('result-acc');
+const resultDestroyed = document.getElementById('result-destroyed');
+const overlayTitle    = document.getElementById('overlay-title');
+const overlayBody     = document.getElementById('overlay-body');
+
+const DANGER_X = 120;
+const LANES = 7;
+const LANE_OFFSET = 90; // px from top (header 54px + hud ~30px)
+
+function getLaneY(lane) {
+  const fieldH = window.innerHeight;
+  const usable = fieldH - LANE_OFFSET - 60; // bottom input area
+  return LANE_OFFSET + (lane / LANES) * usable + 12;
+}
+
+function getRandomWord() {
+  return WORDS[Math.floor(Math.random() * WORDS.length)];
+}
+
+function spawnWord() {
+  if (!gameRunning) return;
+  const text = getRandomWord();
+  const lane = Math.floor(Math.random() * LANES);
+  const y = getLaneY(lane);
+  const x = window.innerWidth + 10;
+
+  const el = document.createElement('div');
+  el.className = 'word';
+  el.dataset.id = idCounter;
+  renderWordEl(el, text, 0);
+  el.style.left = x + 'px';
+  el.style.top  = y + 'px';
+  field.appendChild(el);
+
+  words.push({ el, text, x, y, speed: wordSpeed, id: idCounter++, typed: 0 });
+}
+
+function renderWordEl(el, text, typedLen) {
+  const typed = text.slice(0, typedLen);
+  const remaining = text.slice(typedLen);
+  el.innerHTML = `<span class="typed-chars">${typed}</span><span class="remaining-chars">${remaining}</span>`;
+}
+
+function startGame() {
+  // リセット
+  words.forEach(w => w.el.remove());
+  words = [];
+  score = 0; totalTyped = 0; totalMistakes = 0; destroyedCount = 0;
+  level = 1; spawnInterval = 2400; wordSpeed = 0.45; frameCount = 0;
+  startTime = Date.now();
+  gameRunning = true; gameOver = false;
+
+  updateHUD();
+  overlay.style.display = 'none';
+  input.value = '';
+  input.focus();
+
+  scheduleSpawn();
+  requestAnimationFrame(gameLoop);
+}
+
+function scheduleSpawn() {
+  if (!gameRunning) return;
+  spawnWord();
+  spawnTimer = setTimeout(scheduleSpawn, spawnInterval + Math.random() * 800 - 400);
+}
+
+let lastFrame = null;
+function gameLoop(ts) {
+  if (!gameRunning) return;
+  if (!lastFrame) lastFrame = ts;
+  const dt = Math.min(ts - lastFrame, 50); // cap at 50ms
+  lastFrame = ts;
+
+  // 単語を左へ移動
+  const toRemove = [];
+  for (const w of words) {
+    w.x -= w.speed * (dt / 16.67);
+    w.el.style.left = Math.round(w.x) + 'px';
+    if (w.x < DANGER_X) {
+      toRemove.push(w);
+    }
+  }
+
+  if (toRemove.length > 0) {
+    endGame();
+    return;
+  }
+
+  // WPM更新（1秒ごと）
+  frameCount++;
+  if (frameCount % 60 === 0) updateHUD();
+
+  requestAnimationFrame(gameLoop);
+}
+
+function endGame() {
+  gameRunning = false;
+  clearTimeout(spawnTimer);
+
+  const elapsed = (Date.now() - startTime) / 60000;
+  const wpm = elapsed > 0 ? Math.round(totalTyped / 5 / elapsed) : 0;
+  const acc = (totalTyped + totalMistakes) > 0
+    ? Math.round(totalTyped / (totalTyped + totalMistakes) * 100)
+    : 100;
+
+  resultScore.textContent = score;
+  resultWpm.textContent = wpm;
+  resultAcc.textContent = acc + '%';
+  resultDestroyed.textContent = destroyedCount;
+
+  overlayTitle.textContent = 'GAME OVER';
+  overlayBody.textContent = '';
+  resultArea.style.display = 'block';
+  btnStart.textContent = 'RETRY';
+  overlay.style.display = 'flex';
+}
+
+function updateHUD() {
+  scoreEl.textContent = score;
+  levelEl.textContent = level;
+  const elapsed = startTime ? (Date.now() - startTime) / 60000 : 0;
+  const wpm = elapsed > 0.05 ? Math.round(totalTyped / 5 / elapsed) : 0;
+  wpmEl.textContent = wpm;
+  const total = totalTyped + totalMistakes;
+  accEl.textContent = total > 0 ? Math.round(totalTyped / total * 100) + '%' : '-';
+}
+
+function findTarget(typed) {
+  // 入力に最もマッチする単語（前方一致・最も近いもの）
+  let best = null;
+  let bestDist = Infinity;
+  for (const w of words) {
+    if (w.text.startsWith(typed)) {
+      if (w.x < bestDist) { // 最も左（危険）な単語を優先
+        bestDist = w.x;
+        best = w;
+      }
+    }
+  }
+  return best;
+}
+
+// 全単語のターゲット表示をリセット
+function clearTargets() {
+  for (const w of words) {
+    w.el.classList.remove('targeted');
+    renderWordEl(w.el, w.text, 0);
+  }
+}
+
+input.addEventListener('input', () => {
+  if (!gameRunning) return;
+  const typed = input.value.trim();
+
+  // ミスタイプカウント（前の値より長くなった場合のみ）
+  // ※ 簡易実装：targetに合わない文字が含まれていたらmistake
+  const target = findTarget(typed);
+
+  clearTargets();
+  if (target && typed.length > 0) {
+    target.el.classList.add('targeted');
+    renderWordEl(target.el, target.text, typed.length);
+  } else if (typed.length > 0) {
+    totalMistakes++;
+  }
+});
+
+input.addEventListener('keydown', (e) => {
+  if (!gameRunning) return;
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    const typed = input.value.trim();
+    if (!typed) return;
+
+    const target = findTarget(typed);
+    if (target && target.text === typed) {
+      // 撃墜！
+      destroyWord(target, typed);
+      input.value = '';
+      clearTargets();
+    } else {
+      // ミス
+      totalMistakes += typed.length;
+      input.value = '';
+      clearTargets();
+    }
+  }
+
+  // バックスペースはmistakeカウントしない
+});
+
+function destroyWord(w, typed) {
+  totalTyped += typed.length;
+  destroyedCount++;
+
+  // スコア: 長さ×レベル×スピードボーナス
+  const pts = Math.round(typed.length * 10 * level * (1 + (window.innerWidth - w.x) / window.innerWidth * 0.5));
+  score += pts;
+
+  w.el.classList.add('exploding');
+  setTimeout(() => {
+    w.el.remove();
+    words = words.filter(x => x.id !== w.id);
+  }, 300);
+
+  // レベルアップ判定
+  checkLevelUp();
+  updateHUD();
+}
+
+function checkLevelUp() {
+  const newLevel = Math.min(10, 1 + Math.floor(destroyedCount / 10));
+  if (newLevel > level) {
+    level = newLevel;
+    wordSpeed  = 0.45 + (level - 1) * 0.12;
+    spawnInterval = Math.max(900, 2400 - (level - 1) * 160);
+    levelEl.textContent = level;
+  }
+}
+
+btnStart.addEventListener('click', startGame);
+
+// キーボードフォーカスをinputに維持
+document.addEventListener('keydown', (e) => {
+  if (gameRunning && e.target !== input && !e.ctrlKey && !e.metaKey) {
+    input.focus();
+  }
+});
+</script>
+</body>
+</html>
