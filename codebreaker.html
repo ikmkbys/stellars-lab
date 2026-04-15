@@ -49,6 +49,20 @@
   }
   #back-link:hover { color: #40ff90; }
 
+  #mute-btn {
+    background: transparent;
+    border: 1px solid rgba(64,255,144,0.3);
+    border-radius: 3px;
+    color: #40a060;
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    padding: 4px 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  #mute-btn:hover { border-color: #40ff90; color: #40ff90; }
+
   /* ── HUD ── */
   #hud {
     position: fixed;
@@ -244,7 +258,10 @@
 
 <div id="header">
   <div id="title">CODE BREAKER</div>
-  <a href="games.html" id="back-link">← ARCADE</a>
+  <div style="display:flex;gap:12px;align-items:center;">
+    <button id="mute-btn">♪ BGM</button>
+    <a href="games.html" id="back-link">← ARCADE</a>
+  </div>
 </div>
 
 <div id="hud">
@@ -282,6 +299,20 @@
 <div id="scanline"></div>
 
 <script>
+// ── BGM ──
+const bgm = new Audio('one_heart_remaining.mp3');
+bgm.loop = true;
+bgm.volume = 0.45;
+let bgmMuted = false;
+
+const muteBtn = document.getElementById('mute-btn');
+muteBtn.addEventListener('click', () => {
+  bgmMuted = !bgmMuted;
+  bgm.muted = bgmMuted;
+  muteBtn.textContent = bgmMuted ? '♪ OFF' : '♪ BGM';
+  muteBtn.style.opacity = bgmMuted ? '0.4' : '1';
+});
+
 const WORDS = [
   // 短め
   'null','void','let','var','git','api','css','dom','cli','hex',
@@ -389,6 +420,8 @@ function startGame() {
 
   scheduleSpawn();
   requestAnimationFrame(gameLoop);
+  bgm.currentTime = 0;
+  bgm.play().catch(() => {});
 }
 
 function scheduleSpawn() {
@@ -429,6 +462,7 @@ function gameLoop(ts) {
 function endGame() {
   gameRunning = false;
   clearTimeout(spawnTimer);
+  bgm.pause();
 
   const elapsed = (Date.now() - startTime) / 60000;
   const wpm = elapsed > 0 ? Math.round(totalTyped / 5 / elapsed) : 0;
