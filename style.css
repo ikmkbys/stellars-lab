@@ -301,6 +301,20 @@ header {
   gap: 8px;
 }
 
+.profile-links {
+  display: flex;
+  gap: 16px;
+  margin-top: 14px;
+}
+
+.profile-link {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gold);
+}
+
+.profile-link:hover { text-decoration: underline; }
+
 .profile-tag {
   font-size: 12px;
   color: var(--muted);
