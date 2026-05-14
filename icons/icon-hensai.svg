@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 56 56">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366f1"/>
+      <stop offset="100%" stop-color="#8b5cf6"/>
+    </linearGradient>
+  </defs>
+  <rect width="56" height="56" rx="14" fill="url(#g)"/>
+  <!-- 棒グラフ（残高が減っていくイメージ） -->
+  <rect x="10" y="22" width="8" height="22" rx="2" fill="white" opacity="0.9"/>
+  <rect x="24" y="30" width="8" height="14" rx="2" fill="white" opacity="0.9"/>
+  <rect x="38" y="36" width="8" height="8" rx="2" fill="white" opacity="0.9"/>
+  <!-- 下降矢印 -->
+  <polyline points="14,18 28,26 42,32" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.6"/>
+</svg>
