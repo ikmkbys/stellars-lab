@@ -57,6 +57,8 @@ header {
   font-weight: 700;
   color: var(--text);
   letter-spacing: 0.03em;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .nav-logo .star { font-size: 20px; }
