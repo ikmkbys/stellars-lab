@@ -349,6 +349,15 @@ footer {
   color: var(--muted);
 }
 
+.footer-claude {
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: none;
+}
+.footer-claude:hover {
+  color: var(--indigo);
+}
+
 .footer-links {
   display: flex;
   gap: 20px;
