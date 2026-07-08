@@ -524,6 +524,61 @@ footer {
 
 .tool-link:hover { text-decoration: underline; }
 
+/* ===== Writing ===== */
+.writing-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.writing-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 22px;
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.writing-card:hover {
+  border-color: rgba(255,255,255,0.15);
+  transform: translateY(-2px);
+  text-decoration: none;
+}
+
+.writing-date {
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  flex-shrink: 0;
+  width: 84px;
+}
+
+.writing-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.5;
+  flex: 1;
+}
+
+.writing-arrow {
+  color: var(--gold);
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+@media (max-width: 600px) {
+  .writing-card { flex-wrap: wrap; gap: 6px 16px; }
+  .writing-date { width: auto; order: 2; }
+  .writing-title { order: 1; flex-basis: 100%; }
+  .writing-arrow { order: 3; margin-left: auto; }
+}
+
 /* ===== Playground ===== */
 .game-wrapper {
   display: flex;
@@ -591,4 +646,82 @@ footer {
   .nav-links { display: none; }
   .profile-card { flex-direction: column; }
   .footer-inner { flex-direction: column; align-items: flex-start; }
+}
+
+/* ===== FX: 背景・演出（2026-07 ブランドページ強化） ===== */
+
+/* WebGL星空キャンバス（コンテンツ背面に固定・レイアウトに影響しない） */
+#bg-fx {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #bg-fx { display: none; }
+}
+
+/* 星雲グラデーション（WebGL不可時のフォールバック兼、常時の奥行きレイヤー） */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 80% 60% at 15% 0%, rgba(196,165,90,0.07), transparent 60%),
+    radial-gradient(ellipse 70% 55% at 85% 30%, rgba(143,136,216,0.08), transparent 60%),
+    radial-gradient(ellipse 60% 50% at 50% 100%, rgba(76,70,140,0.10), transparent 65%);
+}
+
+/* Hero見出し背後のゴールドグロー */
+.hero { position: relative; }
+.hero::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 42%;
+  width: min(640px, 90vw);
+  height: 340px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(closest-side, rgba(196,165,90,0.10), transparent 70%);
+  filter: blur(10px);
+  pointer-events: none;
+}
+
+/* 見出し用ディスプレイフォント（英字ラベルのみ・本文はInterのまま） */
+.nav-logo, .hero-badge, .section-label {
+  font-family: 'Marcellus', 'Inter', serif;
+}
+.nav-logo { font-weight: 400; font-size: 18px; letter-spacing: 0.06em; }
+.section-label { letter-spacing: 0.22em; color: var(--gold); opacity: 0.85; }
+
+/* カードの質感（薄いグラデ＋内側ハイライト＋ゴールドhoverグロー） */
+.tool-card, .product-card, .writing-card, .profile-card {
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0) 55%), var(--bg2);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+  transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+.tool-card:hover, .product-card:hover, .writing-card:hover {
+  border-color: rgba(196,165,90,0.35);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 10px 34px -12px rgba(196,165,90,0.18);
+}
+
+/* セクション区切り線を中央フェードのグラデ線に */
+.section {
+  border-top: 1px solid transparent;
+  border-image: linear-gradient(90deg, transparent, rgba(255,255,255,0.14) 30%, rgba(255,255,255,0.14) 70%, transparent) 1;
+}
+
+/* Lenis有効時はCSSのsmooth scrollを無効化（二重に効かせない）
+   .lenisクラスはLenis本体が初期化時にhtmlへ自動付与する */
+html.lenis { scroll-behavior: auto; }
+
+/* モバイルではツールカードを縦積みにして説明文の幅を確保（読みやすさ改善） */
+@media (max-width: 600px) {
+  .tool-card { flex-direction: column; align-items: stretch; }
+  .tool-right { justify-content: flex-end; }
 }

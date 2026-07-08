@@ -10,13 +10,24 @@
   <meta property="og:type" content="website">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Marcellus&display=swap" rel="stylesheet">
   <link rel="canonical" href="https://stellars-lab.com/en/">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../style.css">
   <script defer src="/_vercel/insights/script.js"></script>
+  <!-- 演出用ライブラリ（CDN・ビルドレス） -->
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script defer src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
+  <script type="importmap">
+  { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js" } }
+  </script>
+  <script type="module" src="../fx.js"></script>
 </head>
 <body>
+
+<!-- WebGL星空背景（装飾のみ・操作不可） -->
+<canvas id="bg-fx" aria-hidden="true"></canvas>
 
 <!-- ===== Header ===== -->
 <header>
@@ -55,9 +66,17 @@
     <div class="news-item">
       <span class="news-date">2026.06</span>
       <span class="news-body">
+        <span class="news-tag">Release</span>Launched Solar System 3D — see the planets right now in real-time 3D. Tap a planet for details, or time-travel.
+        <a href="https://solar-system.stellars-lab.com" target="_blank" rel="noopener">View it →</a>
+        <span class="news-new">NEW</span>
+      </span>
+    </div>
+
+    <div class="news-item">
+      <span class="news-date">2026.06</span>
+      <span class="news-body">
         <span class="news-tag">Update</span>Major update to ISS 3D Viewer — orbit prediction, pass forecasts, and EN/JP support.
         <a href="https://iss-3d.stellars-lab.com" target="_blank" rel="noopener">View it →</a>
-        <span class="news-new">NEW</span>
       </span>
     </div>
 
@@ -223,6 +242,21 @@
   <p class="section-desc">Turning real-time data into something you can see.</p>
 
   <div class="tools-list">
+
+    <!-- Solar System 3D -->
+    <div class="tool-card">
+      <div class="tool-left">
+        <span class="tool-icon" style="display:flex;align-items:center;justify-content:center;font-size:30px;background:var(--bg);border:1px solid var(--border);">🪐</span>
+        <div>
+          <div class="tool-name">Solar System 3D</div>
+          <div class="tool-desc">See the planets right now in real-time 3D. Tap a planet for details, or time-travel to past and future alignments.</div>
+        </div>
+      </div>
+      <div class="tool-right">
+        <span class="badge badge-free">Free</span>
+        <a href="https://solar-system.stellars-lab.com" target="_blank" rel="noopener" class="tool-link">View it →</a>
+      </div>
+    </div>
 
     <!-- ISS 3D Viewer -->
     <div class="tool-card">
