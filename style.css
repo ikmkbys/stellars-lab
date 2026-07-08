@@ -642,8 +642,8 @@ footer {
 .legal a { color: var(--gold); }
 
 /* ===== Responsive ===== */
+/* .nav-linksの非表示はハンバーガーメニュー（末尾のFXブロック）に移行済み */
 @media (max-width: 600px) {
-  .nav-links { display: none; }
   .profile-card { flex-direction: column; }
   .footer-inner { flex-direction: column; align-items: flex-start; }
 }
@@ -724,4 +724,64 @@ html.lenis { scroll-behavior: auto; }
 @media (max-width: 600px) {
   .tool-card { flex-direction: column; align-items: stretch; }
   .tool-right { justify-content: flex-end; }
+}
+
+/* ===== 統一アイコン（ゴールド線画SVG＋共通タイル） ===== */
+.tool-icon {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  padding: 9px;
+}
+
+/* ===== ハンバーガーメニュー ===== */
+.nav-burger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 42px;
+  height: 42px;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.nav-burger span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: var(--text);
+  border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+@media (max-width: 840px) {
+  .nav-burger { display: flex; }
+
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    gap: 0;
+    background: rgba(8,8,15,0.97);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 8px 24px 16px;
+    max-height: calc(100vh - 60px);
+    overflow-y: auto;
+  }
+
+  header.nav-open .nav-links { display: flex; }
+
+  .nav-links li a { display: block; padding: 12px 0; }
+  .nav-links .lang-toggle { display: inline-block; margin-top: 8px; }
+
+  header.nav-open .nav-burger span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  header.nav-open .nav-burger span:nth-child(2) { opacity: 0; }
+  header.nav-open .nav-burger span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 }

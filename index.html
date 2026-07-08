@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Stellars Lab — 小さくていい。使われるものを作る。</title>
-  <meta name="description" content="Stellars Lab は、日常のちょっとした摩擦をなくすツールを個人開発しています。AIコーチングアプリ Polaris、SNS画像リサイズ SizeKit、Chrome拡張 Notipop。">
+  <title>Stellars Lab — 夜と週末の小さな実験室。</title>
+  <meta name="description" content="Stellars Lab は、夜と週末の小さな実験室。日常の摩擦をなくすツール（FLOW TASK・SizeKit・HENSAI）と、宇宙を見上げるビジュアライザ（ISS 3D・Solar System 3D）を個人開発しています。">
   <meta property="og:title" content="Stellars Lab">
-  <meta property="og:description" content="日常の摩擦をなくすツールを作る個人開発ブランド。">
+  <meta property="og:description" content="日常の摩擦をなくす道具と、思わず見上げたくなる宇宙。夜と週末の小さな実験室。">
   <meta property="og:type" content="website">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,6 +24,7 @@
   { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js" } }
   </script>
   <script type="module" src="fx.js"></script>
+  <script defer src="nav.js"></script>
 </head>
 <body>
 
@@ -48,14 +49,17 @@
       <li><a href="#about">About</a></li>
 <li><a href="/en/" class="lang-toggle">🇺🇸 EN</a></li>
     </ul>
+    <button class="nav-burger" aria-label="メニュー" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
   </nav>
 </header>
 
 <!-- ===== Hero ===== -->
 <section class="hero">
   <div class="hero-badge">Individual Developer Studio</div>
-  <h1>小さくていい。<br><span>使われるものを作る。</span></h1>
-  <p>日常のちょっとした摩擦をなくす。<br>そのためだけのツールをひとりで作っています。</p>
+  <h1>ここは、夜と週末の<br><span>小さな実験室。</span></h1>
+  <p>日常のちょっとした摩擦をなくす道具と、思わず見上げたくなる宇宙。<br>わくわくしたものから、ひとつずつ形にしています。</p>
 </section>
 
 <!-- ===== What's New ===== -->
@@ -154,7 +158,7 @@
     <!-- FLOW TASK -->
     <div class="tool-card">
       <div class="tool-left">
-        <img src="icons/icon-flow-task.png" class="tool-icon" alt="FLOW TASK" width="56" height="56">
+        <img src="icons/icon-uni-flow-task.svg" class="tool-icon" alt="FLOW TASK" width="56" height="56">
         <div>
           <div class="tool-name">FLOW TASK</div>
           <div class="tool-desc">GTDメソッドで頭の中を整理。InboxからTodayへ、毎朝リセットで今日やることだけに集中できるタスク管理PWA。</div>
@@ -169,7 +173,7 @@
     <!-- FLOW YOTEI -->
     <div class="tool-card">
       <div class="tool-left">
-        <img src="icons/icon-flow-yotei.png" class="tool-icon" alt="FLOW YOTEI" width="56" height="56">
+        <img src="icons/icon-uni-flow-yotei.svg" class="tool-icon" alt="FLOW YOTEI" width="56" height="56">
         <div>
           <div class="tool-name">FLOW YOTEI</div>
           <div class="tool-desc">URLを送るだけ。登録不要でかんたんに使える日程調整ツール。</div>
@@ -184,7 +188,7 @@
     <!-- Notipop -->
     <div class="tool-card">
       <div class="tool-left">
-        <img src="icons/icon-notipop.png" class="tool-icon" alt="Notipop" width="56" height="56">
+        <img src="icons/icon-uni-notipop.svg" class="tool-icon" alt="Notipop" width="56" height="56">
         <div>
           <div class="tool-name">Notipop</div>
           <div class="tool-desc">思いついた、その時にいつでもテキストをNotionへ保存するChrome拡張。</div>
@@ -199,7 +203,7 @@
     <!-- HENSAI -->
     <div class="tool-card">
       <div class="tool-left">
-        <img src="icons/icon-hensai.svg" class="tool-icon" alt="HENSAI" width="56" height="56">
+        <img src="icons/icon-uni-hensai.svg" class="tool-icon" alt="HENSAI" width="56" height="56">
         <div>
           <div class="tool-name">HENSAI</div>
           <div class="tool-desc">住宅ローン・カードローン・リボ払いを一元管理。返済スケジュールと完済予定を見える化。</div>
@@ -214,7 +218,7 @@
     <!-- FLOW BASHO -->
     <div class="tool-card">
       <div class="tool-left">
-        <img src="icons/icon-basho.svg" class="tool-icon" alt="FLOW BASHO" width="56" height="56">
+        <img src="icons/icon-uni-basho.svg" class="tool-icon" alt="FLOW BASHO" width="56" height="56">
         <div>
           <div class="tool-name">FLOW BASHO</div>
           <div class="tool-desc">行き先をみんなで投票で決める場所決めツール。候補を登録してURLをシェアするだけ。</div>
@@ -229,7 +233,7 @@
     <!-- SizeKit -->
     <div class="tool-card">
       <div class="tool-left">
-        <img src="icons/icon-sizekit.png" class="tool-icon" alt="SizeKit" width="56" height="56">
+        <img src="icons/icon-uni-sizekit.svg" class="tool-icon" alt="SizeKit" width="56" height="56">
         <div>
           <div class="tool-name">SizeKit</div>
           <div class="tool-desc">SNS別の推奨サイズに画像をリサイズ・変換。ブラウザ完結で安全・高速。</div>
@@ -256,7 +260,7 @@
     <!-- Solar System 3D -->
     <div class="tool-card">
       <div class="tool-left">
-        <span class="tool-icon" style="display:flex;align-items:center;justify-content:center;font-size:30px;background:var(--bg);border:1px solid var(--border);">🪐</span>
+        <img src="icons/icon-uni-solar.svg" class="tool-icon" alt="Solar System 3D" width="56" height="56">
         <div>
           <div class="tool-name">Solar System 3D</div>
           <div class="tool-desc">今この瞬間の太陽系の惑星配置をリアルタイム3D表示。惑星をタップで詳細、タイムトラベルで過去や未来の配置も再現。</div>
@@ -271,7 +275,7 @@
     <!-- ISS 3D Viewer -->
     <div class="tool-card">
       <div class="tool-left">
-        <span class="tool-icon" style="display:flex;align-items:center;justify-content:center;font-size:30px;background:var(--bg);border:1px solid var(--border);">🛰️</span>
+        <img src="icons/icon-uni-iss.svg" class="tool-icon" alt="ISS 3D Viewer" width="56" height="56">
         <div>
           <div class="tool-name">ISS 3D Viewer</div>
           <div class="tool-desc">国際宇宙ステーションの現在位置・太陽・月をリアルタイム3D表示。地球の昼夜と軌道の軌跡まで再現。</div>

@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Stellars Lab — Small tools. Real use.</title>
-  <meta name="description" content="Stellars Lab builds small tools that remove everyday friction. AI coaching app Polaris, scheduling tool FLOW YOTEI, Chrome extension Notipop, and more.">
+  <title>Stellars Lab — A little lab for nights and weekends.</title>
+  <meta name="description" content="Stellars Lab is a little nights-and-weekends lab building small tools that remove everyday friction — and space visualizers that make you look up (ISS 3D, Solar System 3D).">
   <meta property="og:title" content="Stellars Lab">
-  <meta property="og:description" content="An indie dev studio building tools that remove everyday friction.">
+  <meta property="og:description" content="Tools that remove everyday friction, and windows to look up at space. A little lab for nights and weekends.">
   <meta property="og:type" content="website">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,6 +23,7 @@
   { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js" } }
   </script>
   <script type="module" src="../fx.js"></script>
+  <script defer src="../nav.js"></script>
 </head>
 <body>
 
@@ -47,14 +48,17 @@
       <li><a href="/en/privacy">Privacy</a></li>
       <li><a href="/" class="lang-toggle">🇯🇵 JA</a></li>
     </ul>
+    <button class="nav-burger" aria-label="Menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
   </nav>
 </header>
 
 <!-- ===== Hero ===== -->
 <section class="hero">
   <div class="hero-badge">Individual Developer Studio</div>
-  <h1>Small tools.<br><span>Real use.</span></h1>
-  <p>I build things that remove the small frictions of everyday life.<br>No bloat. Just the one thing that needed fixing.</p>
+  <h1>A little lab for<br><span>nights and weekends.</span></h1>
+  <p>Tools that remove everyday friction, and windows that make you look up at space.<br>Built one by one, whenever something feels exciting.</p>
 </section>
 
 <!-- ===== What's New ===== -->
@@ -154,7 +158,7 @@
     <!-- FLOW TASK -->
     <div class="tool-card">
       <div class="tool-left">
-        <img src="../icons/icon-flow-task.png" class="tool-icon" alt="FLOW TASK" width="56" height="56">
+        <img src="../icons/icon-uni-flow-task.svg" class="tool-icon" alt="FLOW TASK" width="56" height="56">
         <div>
           <div class="tool-name">FLOW TASK</div>
           <div class="tool-desc">GTD-based task manager. Capture to Inbox, focus on Today — auto-reset every morning keeps you on track.</div>
@@ -170,7 +174,7 @@
     <!-- FLOW YOTEI -->
     <div class="tool-card">
       <div class="tool-left">
-        <img src="../icons/icon-flow-yotei.png" class="tool-icon" alt="FLOW YOTEI" width="56" height="56">
+        <img src="../icons/icon-uni-flow-yotei.svg" class="tool-icon" alt="FLOW YOTEI" width="56" height="56">
         <div>
           <div class="tool-name">FLOW YOTEI</div>
           <div class="tool-desc">No sign-up needed. Share a URL and let people pick a time — scheduling made simple.</div>
@@ -186,7 +190,7 @@
     <!-- Notipop -->
     <div class="tool-card">
       <div class="tool-left">
-        <img src="../icons/icon-notipop.png" class="tool-icon" alt="Notipop" width="56" height="56">
+        <img src="../icons/icon-uni-notipop.svg" class="tool-icon" alt="Notipop" width="56" height="56">
         <div>
           <div class="tool-name">Notipop</div>
           <div class="tool-desc">A Chrome extension that saves selected text to Notion in one click.</div>
@@ -202,7 +206,7 @@
     <!-- HENSAI -->
     <div class="tool-card">
       <div class="tool-left">
-        <img src="../icons/icon-hensai.svg" class="tool-icon" alt="HENSAI" width="56" height="56">
+        <img src="../icons/icon-uni-hensai.svg" class="tool-icon" alt="HENSAI" width="56" height="56">
         <div>
           <div class="tool-name">HENSAI</div>
           <div class="tool-desc">Manage mortgages, card loans, and revolving credit in one place. Visualize your repayment schedule and payoff date.</div>
@@ -218,7 +222,7 @@
     <!-- SizeKit -->
     <div class="tool-card">
       <div class="tool-left">
-        <img src="../icons/icon-sizekit.png" class="tool-icon" alt="SizeKit" width="56" height="56">
+        <img src="../icons/icon-uni-sizekit.svg" class="tool-icon" alt="SizeKit" width="56" height="56">
         <div>
           <div class="tool-name">SizeKit</div>
           <div class="tool-desc">Resize & convert images to recommended SNS sizes. Runs entirely in your browser — no uploads, no server.</div>
@@ -246,7 +250,7 @@
     <!-- Solar System 3D -->
     <div class="tool-card">
       <div class="tool-left">
-        <span class="tool-icon" style="display:flex;align-items:center;justify-content:center;font-size:30px;background:var(--bg);border:1px solid var(--border);">🪐</span>
+        <img src="../icons/icon-uni-solar.svg" class="tool-icon" alt="Solar System 3D" width="56" height="56">
         <div>
           <div class="tool-name">Solar System 3D</div>
           <div class="tool-desc">See the planets right now in real-time 3D. Tap a planet for details, or time-travel to past and future alignments.</div>
@@ -261,7 +265,7 @@
     <!-- ISS 3D Viewer -->
     <div class="tool-card">
       <div class="tool-left">
-        <span class="tool-icon" style="display:flex;align-items:center;justify-content:center;font-size:30px;background:var(--bg);border:1px solid var(--border);">🛰️</span>
+        <img src="../icons/icon-uni-iss.svg" class="tool-icon" alt="ISS 3D Viewer" width="56" height="56">
         <div>
           <div class="tool-name">ISS 3D Viewer</div>
           <div class="tool-desc">Real-time 3D view of the ISS position, the Sun and the Moon — with Earth's day/night terminator and the orbital ground track.</div>
