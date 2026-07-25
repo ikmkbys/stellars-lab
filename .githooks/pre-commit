@@ -1,0 +1,6 @@
+#!/bin/sh
+# 公開されないページへのリンクが混ざったコミットを止める。
+# 有効化：git config core.hooksPath .githooks
+# 緊急時に飛ばす：git commit --no-verify
+
+node scripts/check-links.mjs || exit 1
