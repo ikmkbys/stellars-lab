@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SizeKit — 画像をアップロードしないSNS画像リサイズツール</title>
+  <link rel="canonical" href="https://stellars-lab.com/sizekit">
+  <meta name="description" content="SizeKit は SNS ごとの推奨サイズに画像を整えるブラウザ完結型のツールです。画像はサーバーに送信されず、EXIF も自動で除去されます。開発の経緯と機能、プライバシー設計を紹介します。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="app-page.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6278805058746304" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <a class="nav-logo" href="index.html" style="text-decoration:none;">
+      <span class="star">✦</span>
+      Stellars Lab
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html#products">Products</a></li>
+      <li><a href="index.html#tools">Tools</a></li>
+      <li><a href="index.html#about">About</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="page-hero">
+  <div class="page-hero-icon">🖼️</div>
+  <div>
+    <h1>SizeKit</h1>
+    <p>SNS ごとの推奨サイズに整える。画像はブラウザから出ていきません。</p>
+  </div>
+</div>
+
+<section class="section">
+  <p class="section-label">Why</p>
+  <h2>なぜ作ったのか</h2>
+  <div class="prose">
+    <p>
+      X に貼ると上下が切れる。Instagram に上げたら文字がぼやける。note のヘッダーだけ比率が違う。
+      投稿のたびに「このSNSの推奨サイズって何だっけ」と検索し直していました。調べた数字は次の週には忘れています。
+    </p>
+    <p>
+      それだけなら既存のオンラインツールで足りるはずでした。けれど手が止まったのは、
+      多くの画像ツールが<strong>画像を一度サーバーへアップロードする</strong>作りだったからです。
+      家族が写った写真、書類のスクリーンショット、まだ公開していない制作物。
+      これらを他人のサーバーに預ける前提でしか使えないのは、どうにも落ち着きませんでした。
+    </p>
+    <p>
+      SizeKit は、その二つを同時に解いた道具です。
+      SNS ごとのサイズを覚えなくてよくて、しかも<strong>画像がブラウザの外に出ない</strong>。
+      処理はすべて Canvas API を使って手元の端末の中だけで行われ、サーバーへ送信する処理は実装していません。
+    </p>
+  </div>
+</section>
+
+<section class="section">
+  <p class="section-label">Features</p>
+  <h2>できること</h2>
+  <ul class="spec-list">
+    <li><b>SNS プリセット</b>X / Instagram / LinkedIn / Facebook / YouTube / OGP / note / OSIRO の推奨サイズを収録。選ぶだけで整います。</li>
+    <li><b>複数サイズを一括で書き出し</b>1枚の画像から複数サイズをまとめて生成し、ZIP でダウンロードできます。複数画像の一括処理にも対応。</li>
+    <li><b>切り抜きと余白</b>被写体を活かす切り抜き（cover）と、全体を収める余白付き（contain・背景色は自由）を切り替えられます。</li>
+    <li><b>形式変換と容量調整</b>JPEG / PNG / WebP。ファイルサイズの上限を指定すると、品質を自動で調整して収めます。</li>
+    <li><b>モザイク・黒塗り</b>写り込んだ個人情報を隠せます。文字を隠すときの注意点も画面内で案内しています。</li>
+    <li><b>証明写真モード</b>マイナンバー・パスポート・履歴書・運転免許・ビザ申請の5種類の規格に合わせて書き出せます。</li>
+    <li><b>SNS 圧縮シミュレーター</b>投稿後にどれくらい劣化するかを、投稿前にビフォーアフターで確認できます。</li>
+    <li><b>埋め込みサムネイル漏洩チェック</b>JPEG の内部に残った「加工前の縮小画像」を検出して取り除きます。</li>
+  </ul>
+</section>
+
+<section class="section">
+  <p class="section-label">Privacy</p>
+  <h2>画像を預からない設計</h2>
+  <div class="prose">
+    <p>
+      SizeKit にはアップロード先がありません。画像を選ぶと、その場でブラウザが読み込んで描画し、書き出しまでを端末内で完了します。
+      通信が発生しないので、回線が細い場所でも大きな画像を扱えます。
+    </p>
+    <p>
+      加えて、書き出した画像からは <strong>EXIF が自動的に取り除かれます</strong>。
+      スマートフォンで撮った写真には撮影日時や機種、設定によっては撮影場所の緯度経度が埋め込まれていることがあります。
+      Canvas で描き直す方式のため、これらは結果的にすべて落ちます。
+    </p>
+    <div class="callout">
+      作っている途中で気づいたのが「埋め込みサムネイル」の存在でした。
+      JPEG には一覧表示を速くするための小さなプレビュー画像が内部に保存されていることがあり、
+      これは<strong>本体をトリミングやモザイクで加工しても更新されない場合がある</strong>。
+      つまり加工前の姿がファイルの中に残り続けます。
+      専用のチェックツールを別に用意したのは、この挙動を自分で確かめて驚いたからです。
+    </div>
+  </div>
+  <a href="https://sizekit.stellars-lab.com" target="_blank" rel="noopener" class="btn-primary">SizeKit を使ってみる →</a>
+</section>
+
+<section class="section">
+  <p class="section-label">FAQ</p>
+  <h2>よくある質問</h2>
+  <div class="faq">
+    <div class="faq-item">
+      <h3>会員登録やインストールは必要ですか？</h3>
+      <p>どちらも不要です。ブラウザで開いて画像を選ぶだけで使えます。</p>
+    </div>
+    <div class="faq-item">
+      <h3>アップロードされないなら、画像はどこで処理されているのですか？</h3>
+      <p>あなたのブラウザの中です。JavaScript の Canvas API で読み込み・変形・書き出しを行っています。サーバーへ画像を送る処理はありません。</p>
+    </div>
+    <div class="faq-item">
+      <h3>スマートフォンでも使えますか？</h3>
+      <p>使えます。ただし非常に大きな画像を大量に処理すると端末のメモリを消費するため、枚数を分けたほうが安定します。</p>
+    </div>
+    <div class="faq-item">
+      <h3>画像の使い方や圧縮の仕組みをもっと知りたい</h3>
+      <p>SizeKit のブログで、形式ごとの容量比較や SNS の圧縮を実測した記事を公開しています。<a href="https://sizekit.stellars-lab.com/blog" target="_blank" rel="noopener">SizeKit ブログ →</a></p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <span class="footer-copy">© 2026 Stellars Lab</span>
+    <div class="footer-links">
+      <a href="about.html">このサイトについて</a>
+      <a href="privacy.html">プライバシーポリシー</a>
+      <a href="terms.html">利用規約</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

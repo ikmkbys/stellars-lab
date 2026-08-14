@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HENSAI — 複数の借入をまとめて見る返済管理</title>
+  <link rel="canonical" href="https://stellars-lab.com/hensai">
+  <meta name="description" content="HENSAI は複数の借入を一元管理し、元利均等・元金均等・リボ払いの三方式で返済計画を試算できるツールです。入力したデータは端末内にのみ保存されます。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="app-page.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6278805058746304" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <a class="nav-logo" href="index.html" style="text-decoration:none;">
+      <span class="star">&#10022;</span>
+      Stellars Lab
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html#products">Products</a></li>
+      <li><a href="index.html#tools">Tools</a></li>
+      <li><a href="index.html#about">About</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="page-hero">
+  <div class="page-hero-icon">&#128202;</div>
+  <div>
+    <h1>HENSAI</h1>
+    <p>残高がいくつもあると、全体像が見えなくなる。</p>
+  </div>
+</div>
+
+<section class="section">
+  <p class="section-label">Why</p>
+  <h2>怖いのは金額ではなく、見えないこと</h2>
+  <div class="prose">
+    <p>
+      奨学金、車のローン、カードのリボ払い。
+      それぞれの残高は明細を見れば分かるのに、<strong>合計でいつ終わるのか</strong>だけが分かりません。
+      それが見えないままだと、繰り上げ返済にいくら回すべきかも判断できず、
+      なんとなく不安なまま毎月が過ぎていきます。
+    </p>
+    <p>
+      HENSAI は複数の借入をまとめて登録し、完済までの道筋を一本の線として見せます。
+      毎月いくら追加で返すと何ヶ月縮むのか、利息の総額はどう変わるのかを、その場で試せます。
+    </p>
+  </div>
+</section>
+
+<section class="section">
+  <p class="section-label">Features</p>
+  <h2>できること</h2>
+  <ul class="spec-list">
+    <li><b>三つの返済方式</b>元利均等・元金均等・リボ払い（定率）に対応。据置期間やボーナス払いも設定できます。</li>
+    <li><b>追加返済の試算</b>毎月いくら上乗せするかを変えて、完済時期と総利息の変化を比べられます。</li>
+    <li><b>グラフ表示</b>残高の推移と、元金と利息の割合が入れ替わっていく様子を確認できます。</li>
+    <li><b>端末内で完結</b>入力した内容はブラウザの中にだけ保存されます。アカウント登録もサーバー送信もありません。</li>
+  </ul>
+</section>
+
+<section class="section">
+  <p class="section-label">Behind</p>
+  <h2>リボ払いで「終わらない」を隠さない</h2>
+  <div class="prose">
+    <p>
+      作っている途中で一番悩んだのがリボ払いの扱いでした。
+      毎月の支払額に対して利息の割合が大きすぎると、元金がほとんど減りません。
+      計算上、完済時期が事実上存在しない状態になります。
+    </p>
+    <p>
+      初期の実装では、この状態のときに利息が0円、完済予定日が空欄として表示されていました。
+      数式としては破綻していないのですが、
+      <strong>画面の上ではいちばん安全な借入に見えてしまう</strong>。
+      これは危ないと判断して、いまは「要再計画」としてはっきり警告を出すようにしています。
+      道具が現実を柔らかく見せてしまうなら、それは道具のほうが間違っています。
+    </p>
+    <div class="callout">
+      HENSAI は返済計画を試算するための道具です。
+      金融商品の勧誘や、個別の借入判断についての助言を行うものではありません。
+      実際の契約条件・返済額・手数料は、必ず契約先の明細でご確認ください。
+    </div>
+  </div>
+  <a href="https://hensai.stellars-lab.com" target="_blank" rel="noopener" class="btn-primary">HENSAI を開く &rarr;</a>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <span class="footer-copy">&copy; 2026 Stellars Lab</span>
+    <div class="footer-links">
+      <a href="about.html">このサイトについて</a>
+      <a href="privacy.html">プライバシーポリシー</a>
+      <a href="terms.html">利用規約</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

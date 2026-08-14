@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="2048 STELLAR GRID は同じ数字のタイルを合わせて 2048 を目指すスライドパズルです。ブラウザですぐ遊べます。">
+<link rel="canonical" href="https://stellars-lab.com/2048">
 <title>2048 // STELLAR SYS</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -157,9 +159,16 @@
   #overlay-sub { font-size: 9px; letter-spacing: 2px; color: rgba(200,220,255,0.5); }
   .overlay-gameover #overlay-msg { color: #ff4060; text-shadow: 0 0 12px rgba(255,60,80,0.8); }
   .overlay-win     #overlay-msg { color: #00ffff; text-shadow: 0 0 16px rgba(0,255,255,0.9), 0 0 30px rgba(0,200,255,0.5); }
+
+  .back-link { position: fixed; left: 12px; bottom: 12px; z-index: 9999;
+    font-size: 12px; color: #7a8496; text-decoration: none;
+    font-family: 'Courier New', monospace; opacity: .75; }
+  .back-link:hover { opacity: 1; color: #c4a55a; }
 </style>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6278805058746304" crossorigin="anonymous"></script>
 </head>
 <body>
+<a href="/" class="back-link">← Stellars Lab</a>
 <div id="app">
   <div id="grid-area">
     <div id="grid-container">

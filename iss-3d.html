@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ISS 3D — 国際宇宙ステーションの現在地をリアルタイムに見る</title>
+  <link rel="canonical" href="https://stellars-lab.com/iss-3d">
+  <meta name="description" content="ISS 3D は国際宇宙ステーションの現在位置・軌道・上空通過をブラウザ上の3D地球で見られるビジュアライザです。SGP4 による軌道計算や、地球のほうを回す描画方式について紹介します。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="app-page.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6278805058746304" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <a class="nav-logo" href="index.html" style="text-decoration:none;">
+      <span class="star">✦</span>
+      Stellars Lab
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html#products">Products</a></li>
+      <li><a href="index.html#tools">Tools</a></li>
+      <li><a href="index.html#about">About</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="page-hero">
+  <div class="page-hero-icon">🛰️</div>
+  <div>
+    <h1>ISS 3D</h1>
+    <p>いま、国際宇宙ステーションはどこを飛んでいるのか。</p>
+  </div>
+</div>
+
+<section class="section">
+  <p class="section-label">Why</p>
+  <h2>「いま真上にいるかもしれない」を見たかった</h2>
+  <div class="prose">
+    <p>
+      国際宇宙ステーションは約90分で地球を一周しています。
+      つまり自分が昼ごはんを食べている間に、あれは地球をぐるりと一周している。
+      文章で読むと当たり前なのに、実感としてはまったく像を結びませんでした。
+    </p>
+    <p>
+      位置を数字で見せてくれるサイトはいくつもあります。緯度と経度が並んでいる。
+      でも知りたかったのはそこではなくて、<strong>いま自分のいる場所との関係</strong>でした。
+      さっき頭の上を通ったのか、これから来るのか、それとも地球の裏側なのか。
+    </p>
+    <p>
+      それを見るために作ったのが ISS 3D です。ブラウザで開くと3Dの地球が現れて、
+      ISS の現在位置と、これから通る軌道が描かれます。
+    </p>
+  </div>
+</section>
+
+<section class="section">
+  <p class="section-label">Features</p>
+  <h2>見えるもの</h2>
+  <ul class="spec-list">
+    <li><b>現在位置</b>ISS の位置を定期的に取得して反映します。真下がどこの海か陸かも表示します。</li>
+    <li><b>これから通る道</b>SGP4 という軌道計算の方式で、この先の軌道を先回りして描きます。</li>
+    <li><b>上空通過の予測</b>あなたのいる場所の上空を、次にいつ通るのかを計算します。</li>
+    <li><b>昼と夜</b>太陽の位置に合わせて地球の昼夜が動き、夜側には街の明かりが灯ります。</li>
+    <li><b>月と天の川</b>月は実際の満ち欠けと位置を反映。背景には天の川が広がります。</li>
+    <li><b>日本語 / 英語・BGM</b>言語を切り替えられます。音楽は任意でオンにできます。</li>
+  </ul>
+  <a href="https://iss-3d.stellars-lab.com" target="_blank" rel="noopener" class="btn-primary">ISS 3D を開く →</a>
+</section>
+
+<section class="section">
+  <p class="section-label">Behind</p>
+  <h2>ISS は動いていない</h2>
+  <div class="prose">
+    <p>
+      作ってみて面白かったのは、画面の中で <strong>ISS はまったく動いていない</strong>ことです。
+      ISS を原点に固定して、代わりに<strong>地球のほうを回している</strong>。
+      緯度と経度が更新されると、その値をもとに地球の向きを変えます。
+    </p>
+    <p>
+      素直に考えれば、地球を止めて ISS を動かすほうが自然に思えます。
+      ただ、そうすると視点が常に対象を追いかけ続けることになり、
+      拡大したときの数値の精度や、カメラ操作の扱いが一気に面倒になります。
+      動かす対象を1つに絞ってしまったほうが、結果として素直な作りになりました。
+    </p>
+    <p>
+      軌跡や未来の軌道は地球オブジェクトの子として置いてあるので、地球が回れば一緒に回ります。
+      地球の表面に線を引いておけば、あとは全部まとめて回るだけ、という仕組みです。
+    </p>
+    <div class="callout">
+      全体は単一の HTML ファイルで、ビルド工程はありません。
+      Three.js とテクスチャは CDN から読み込んでいます。
+      「開いたら動く」の一枚で完結させたかったので、この構成を維持しています。
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <p class="section-label">FAQ</p>
+  <h2>よくある質問</h2>
+  <div class="faq">
+    <div class="faq-item">
+      <h3>スマートフォンでも動きますか？</h3>
+      <p>動きます。画面サイズに応じた表示に切り替わります。3D 描画のため、端末によっては発熱することがあります。</p>
+    </div>
+    <div class="faq-item">
+      <h3>表示されている場所の名前が実際とずれることがあります</h3>
+      <p>位置の取得には間隔があるため、海岸線をまたぐ前後で地名の切り替わりが少し遅れることがあります。位置そのものは更新されています。</p>
+    </div>
+    <div class="faq-item">
+      <h3>上空通過の予測はどれくらい正確ですか？</h3>
+      <p>軌道情報をもとにした計算値です。実際に肉眼で見えるかどうかは、時刻・天候・空の明るさに左右されます。</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <span class="footer-copy">© 2026 Stellars Lab</span>
+    <div class="footer-links">
+      <a href="about.html">このサイトについて</a>
+      <a href="privacy.html">プライバシーポリシー</a>
+      <a href="terms.html">利用規約</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,137 @@
+/* アプリ紹介ページ共通レイアウト（style.css の変数を利用） */
+
+.page-hero {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 60px 24px 0;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.page-hero-icon { font-size: 40px; }
+
+.page-hero h1 {
+  font-size: 28px;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.page-hero p {
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.prose p {
+  font-size: 15px;
+  color: var(--muted);
+  line-height: 1.9;
+  margin-bottom: 18px;
+}
+
+.prose p:last-child { margin-bottom: 0; }
+
+.prose strong { color: var(--text); font-weight: 600; }
+
+.panel {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  margin-top: 20px;
+}
+
+.panel h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.panel p {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+.spec-list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.spec-list li {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 18px;
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.spec-list li b {
+  display: block;
+  color: var(--text);
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+
+.callout {
+  border-left: 2px solid var(--gold);
+  background: var(--gold-soft);
+  border-radius: 0 8px 8px 0;
+  padding: 16px 20px;
+  margin-top: 20px;
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--gold);
+  color: #08080f;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 11px 22px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: opacity 0.2s;
+  margin-top: 24px;
+}
+
+.btn-primary:hover { opacity: 0.85; text-decoration: none; }
+
+.faq { display: flex; flex-direction: column; gap: 12px; margin-top: 20px; }
+
+.faq-item {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 22px 26px;
+}
+
+.faq-item h3 {
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.faq-item p {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+@media (max-width: 640px) {
+  .panel { padding: 22px 20px; }
+  .page-hero { padding-top: 40px; }
+  .page-hero h1 { font-size: 22px; }
+}

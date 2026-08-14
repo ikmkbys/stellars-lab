@@ -2,6 +2,8 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
+<meta name="description" content="PIXEL RUNNER はジャンプだけで障害物を避け続ける横スクロールゲームです。ブラウザですぐ遊べます。">
+<link rel="canonical" href="https://stellars-lab.com/game">
 <title>PIXEL RUNNER</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -37,9 +39,16 @@
     letter-spacing: 2px;
   }
   #info span { color: #f0c040; }
+
+  .back-link { position: fixed; left: 12px; bottom: 12px; z-index: 9999;
+    font-size: 12px; color: #7a8496; text-decoration: none;
+    font-family: 'Courier New', monospace; opacity: .75; }
+  .back-link:hover { opacity: 1; color: #c4a55a; }
 </style>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6278805058746304" crossorigin="anonymous"></script>
 </head>
 <body>
+<a href="/" class="back-link">← Stellars Lab</a>
 <h1>PIXEL RUNNER</h1>
 <canvas id="c" width="800" height="280"></canvas>
 <div id="info">

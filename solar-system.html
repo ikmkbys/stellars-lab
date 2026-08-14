@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solar System 3D — 今この瞬間の太陽系を見る</title>
+  <link rel="canonical" href="https://stellars-lab.com/solar-system">
+  <meta name="description" content="Solar System 3D は現在の惑星配置をリアルタイムに表示する3Dビジュアライザです。前後50年の時間旅行と、見やすい配置と実比率の切り替えに対応しています。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="app-page.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6278805058746304" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <a class="nav-logo" href="index.html" style="text-decoration:none;">
+      <span class="star">&#10022;</span>
+      Stellars Lab
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html#products">Products</a></li>
+      <li><a href="index.html#tools">Tools</a></li>
+      <li><a href="index.html#about">About</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="page-hero">
+  <div class="page-hero-icon">&#127774;</div>
+  <div>
+    <h1>Solar System 3D</h1>
+    <p>惑星は、いまこの並びで回っている。</p>
+  </div>
+</div>
+
+<section class="section">
+  <p class="section-label">Why</p>
+  <h2>今この瞬間の、惑星の位置</h2>
+  <div class="prose">
+    <p>
+      理科の教科書に載っている太陽系の絵は、たいてい惑星がきれいに一列に並んでいます。
+      でも実際には、それぞれが違う速さで公転しているので、
+      並ぶことはほとんどありません。
+    </p>
+    <p>
+      では今この瞬間はどう並んでいるのか。
+      それを見るために作ったのが Solar System 3D です。
+      ブラウザを開くと、<strong>今日この時刻の惑星配置</strong>が表示されます。
+      木星が太陽の向こう側にいる日もあれば、火星がすぐ近くにいる日もあります。
+    </p>
+  </div>
+</section>
+
+<section class="section">
+  <p class="section-label">Features</p>
+  <h2>できること</h2>
+  <ul class="spec-list">
+    <li><b>八つの惑星と月</b>ケプラーの軌道要素をブラウザ内で計算して配置しています。外部の通信は必要ありません。</li>
+    <li><b>時間旅行</b>前後およそ50年を行き来できます。再生すると惑星が公転を始めます。</li>
+    <li><b>二つのスケール</b>見やすく圧縮した配置と、実際の比率での配置を切り替えられます。実比率にすると、太陽系がほとんど空っぽであることが分かります。</li>
+    <li><b>惑星の詳細</b>クリックすると直径・質量・現在の距離・光が届くまでの時間・公転周期・平均気温・衛星数などを表示します。</li>
+    <li><b>日本語 / 英語</b>言語を切り替えられます。</li>
+  </ul>
+  <a href="https://solar-system.stellars-lab.com" target="_blank" rel="noopener" class="btn-primary">Solar System 3D を開く &rarr;</a>
+</section>
+
+<section class="section">
+  <p class="section-label">Behind</p>
+  <h2>スケールを正直にすると、何も見えない</h2>
+  <div class="prose">
+    <p>
+      実際の比率で太陽系を描くと、惑星は点にもならず、画面はほぼ真っ黒になります。
+      距離が桁違いに大きいためです。
+      だから世の中の太陽系の図は、ほとんどが距離を圧縮して描かれています。
+    </p>
+    <p>
+      どちらか一方だけを見せると嘘が混じるので、
+      このアプリでは<strong>両方をボタンひとつで往復できる</strong>ようにしました。
+      普段は見やすい配置で眺めて、たまに実比率に切り替えて愕然とする。
+      その落差そのものが、たぶん一番伝えたかった情報です。
+    </p>
+    <div class="callout">
+      姉妹作として、地球のまわりを見る <a href="iss-3d.html">ISS 3D</a> と、
+      太陽系の外側を見る <a href="near-stars.html">Near Stars</a> があります。
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <span class="footer-copy">&copy; 2026 Stellars Lab</span>
+    <div class="footer-links">
+      <a href="about.html">このサイトについて</a>
+      <a href="privacy.html">プライバシーポリシー</a>
+      <a href="terms.html">利用規約</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
