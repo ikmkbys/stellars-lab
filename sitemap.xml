@@ -61,6 +61,18 @@
   </url>
 
   <url>
+    <loc>https://stellars-lab.com/family</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://stellars-lab.com/mokuroku</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
     <loc>https://stellars-lab.com/polaris</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
