@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>「動いてるはず」がいちばん危ない — エラーを出さずに壊れる仕組みの話</title>
+  <link rel="canonical" href="https://stellars-lab.com/blog/silent-failure">
+  <meta name="description" content="自動化した処理が、エラーを一度も出さないまま1ヶ月以上なにも生み出していませんでした。成功で終わるのに成果物がゼロになる「沈黙するバグ」の三つの形と、気づくための四つの検査を、実際に踏んだ例で書きます。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../app-page.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6278805058746304" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <a class="nav-logo" href="../index.html" style="text-decoration:none;">
+      <span class="star">&#10022;</span>
+      Stellars Lab
+    </a>
+    <ul class="nav-links">
+      <li><a href="../index.html#products">Products</a></li>
+      <li><a href="../index.html#tools">Tools</a></li>
+      <li><a href="index.html">Blog</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="page-hero">
+  <div class="page-hero-icon">&#9888;</div>
+  <div>
+    <h1>「動いてるはず」がいちばん危ない</h1>
+    <p>2026-09-07 &middot; エラーを出さずに壊れる仕組みの話</p>
+  </div>
+</div>
+
+<section class="section">
+  <div class="prose">
+    <p>
+      個人で作った仕組みを、毎晩自動で動かしています。
+      外部サービスからデータを集めて、AI に判断させて、条件を満たしたものだけ次の処理へ渡す。人は触りません。
+    </p>
+    <p>
+      ある朝、記録をたどっていて気づきました。<strong>ひと月以上、最後まで通った処理が一件もありません</strong>。
+      驚いたのはそこではなく、その間ずっと<strong>すべてが「成功」で終わっていた</strong>ことでした。
+      夜間の処理は毎日みどり。エラーログはゼロ。異常を知らせるための監視まで「異常なし」を返し続けていた。
+      壊れていると教えてくれるものが、ひとつもありませんでした。
+    </p>
+    <p>
+      エラーを出して落ちるバグは、実のところ親切です。落ちた場所も理由も残る。
+      厄介なのは、<strong>エラーを出さずに、何もしない</strong>ほうです。
+      自分が踏んだものを並べてみると、いくつかの形に分かれました。
+    </p>
+  </div>
+</section>
+
+<section class="section">
+  <p class="section-label">Patterns</p>
+  <h2>沈黙するバグの三つの形</h2>
+
+  <div class="panel">
+    <h3>形1：成功しているが、何もしていない</h3>
+    <p>
+      外部 API の呼び出しが失敗したとき、そのコードは例外を投げずに既定値で先へ進む作りでした。
+      判断の結果は「見送り」。見送りは正常な判断なので、記録にも異常は残りません。
+      三週間、全件が見送りでした。原因は API の利用枠が尽きていただけです。
+    </p>
+    <p>
+      失敗を握りつぶして既定値で続行する設計自体は、止めないための工夫としてよく使われます。
+      問題は、<strong>その既定値が、正常なときにもありうる値</strong>だったこと。
+      そうなると失敗と正常が見分けられません。既定値は「正常時には絶対に出ない値」にしておくべきでした。
+    </p>
+  </div>
+
+  <div class="panel">
+    <h3>形2：検査が中間しか見ていない</h3>
+    <p>
+      時系列データが取れているかを検査していました。中身は「取得できた本数が三十本以上あるか」。これは通り続けていた。
+    </p>
+    <p>
+      実際には、API に渡す条件の組み合わせが悪く、返ってくるのが<strong>三ヶ月前までの古いデータ</strong>になっていました。
+      本数はある。日付が古いだけ。検査は本数しか見ていないので、みどりのまま。
+      そのあいだ、三ヶ月前の値で今日の判断をしていたことになります。
+    </p>
+    <p>
+      数を数える検査は書きやすい。書きやすいぶん、中身を見落とします。
+    </p>
+  </div>
+
+  <div class="panel">
+    <h3>形3：そもそも実行されていない</h3>
+    <p>
+      これが一番たちが悪いものでした。ある日、定時実行がまるごと発火しませんでした。
+      実行基盤の都合で、混み合う時間帯の予約はまれに落とされることがあります。
+    </p>
+    <p>
+      このとき何が起きるかというと、<strong>何も起きません</strong>。
+      失敗の通知は、処理が走って失敗したときに出るものだからです。走らなかった日は、失敗すらしていない。
+      監視の仕組みを処理の内側に置いていると、処理が動かない日は監視も動きません。
+    </p>
+  </div>
+</section>
+
+<section class="section">
+  <p class="section-label">Why</p>
+  <h2>なぜ気づけないのか</h2>
+  <div class="prose">
+    <p>
+      三つに共通しているのは、<strong>「エラーが出ていない＝正常」という前提</strong>です。
+    </p>
+    <p>
+      監視の多くは「異常が起きたら教えて」という形をしています。
+      この形は、何かが起きることを前提にしている。<strong>何も起きないことは、検出できません</strong>。
+      そして自動化した処理の失敗は、たいてい「何も起きない」という顔をしてやってきます。
+    </p>
+    <p>
+      画面で確認していたつもりが、それも当てになりませんでした。
+      管理画面がデータをその場で読まず、最後に更新した時点の内容を表示し続ける作りになっていて、
+      数日前の数字をずっと見せられていたことがあります。
+      目視で確かめていたはずのものが、実は過去の写真だった。
+    </p>
+  </div>
+</section>
+
+<section class="section">
+  <p class="section-label">Checks</p>
+  <h2>沈黙に気づくための四つの検査</h2>
+  <ul class="spec-list">
+    <li><b>成果物を数える</b>「エラーなく終わったか」ではなく「何件できたか」で判断する。あるかないかではなく、件数を時系列で見て、期待する曲線から外れたら異常とみなす。</li>
+    <li><b>不変条件を書く</b>「開始した処理には、必ず対応する終了の記録がある」のように、常に真であるべき条件を言葉にして、破れたら赤くする。壊れ方を予想するのではなく、正しい状態のほうを書く。</li>
+    <li><b>終端まで検査する</b>途中の生成物ではなく、最後の副作用——外部に送信された、通知が飛んだ、保存された——に到達できるかを見る。手前まで健全でも、最後の一歩が切れていれば何も起きていない。</li>
+    <li><b>めったに走らない道は、偽のデータで発火させる</b>警報の送信、失敗したときの巻き戻し、復旧の手順。本物のきっかけを待っていると、壊れたまま何ヶ月も眠ります。作った直後に一度、偽の入力で実際に動くところまで確かめる。</li>
+  </ul>
+</section>
+
+<section class="section">
+  <p class="section-label">Leading Indicator</p>
+  <h2>「待てば動く」には、先行指標をつける</h2>
+  <div class="prose">
+    <p>
+      もうひとつ効いたのは、<strong>「そのうち動く」を疑うこと</strong>でした。
+    </p>
+    <p>
+      まだ条件がそろっていないだけ。データが溜まれば動く。——この見立ては、たいてい正しく、たまに間違っています。
+      やっかいなのは、間違っているとき、<strong>待っているあいだずっと壊れている</strong>ことです。
+      しかも待つと決めた本人は、動かないことを想定どおりだと思っている。
+    </p>
+    <p>
+      なので、待つと判断したときは必ず<strong>先行指標</strong>をセットにするようにしました。
+      「二週間以内に一件は最後まで通るはず。通らなければ、外部の状況のせいではなく壊れている疑いとして調べる」。
+      期限と、そのときに何をするかを先に書いておく。
+      決められないなら、それは「待てば動く」と言えるほど分かっていない、ということでした。
+    </p>
+    <p>
+      あとから振り返って、いちばん分かりやすい先行指標は<strong>処理時間</strong>でした。
+      正常なときに五分かかっていた処理が、壊れた日から一分半に落ちていた。
+      AI を呼ばずに即座にエラーで返っていたからです。
+      成果物を一件も見なくても、所要時間のグラフだけで気づけたはずでした。
+      何をしているか分からなくても、<strong>かかる時間が急に変わったら、中で何かが変わっています</strong>。
+    </p>
+  </div>
+</section>
+
+<section class="section">
+  <p class="section-label">Summary</p>
+  <h2>観測していないことを、動いていると呼ばない</h2>
+  <div class="prose">
+    <p>
+      「動いてるはず」は仮説であって、観測ではありません。
+      仕組みが「成功」と言っているのは、たいていの場合<strong>処理が最後の行まで到達した</strong>という意味でしかなく、
+      意図した結果が出たという意味ではない。この二つは、放っておくと簡単にすれ違います。
+    </p>
+    <p>
+      自動化の価値は、見ていなくても進むことにあります。
+      だからこそ、見ていないあいだに止まっていたことに気づける仕掛けが要る。
+      成果物を数える。正しい状態を書く。終わりまで検査する。めったに通らない道は自分で試す。
+      派手ではありませんが、この四つを最初に入れておくかどうかで、失う時間の桁が変わります。
+    </p>
+    <p>
+      ちなみに冒頭の仕組みは、いま四つとも入れたうえで動いています。
+      それでもまだ、想定していなかった形の沈黙が出てきます。<strong>気づけた分だけ塞いだ、というのが正直なところです</strong>。
+    </p>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <span class="footer-copy">&copy; 2026 Stellars Lab</span>
+    <div class="footer-links">
+      <a href="index.html">Blog</a>
+      <a href="../about.html">このサイトについて</a>
+      <a href="../privacy.html">プライバシーポリシー</a>
+      <a href="../terms.html">利用規約</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

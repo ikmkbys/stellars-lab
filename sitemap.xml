@@ -4,7 +4,7 @@
 
   <url>
     <loc>https://stellars-lab.com/</loc>
-    <lastmod>2026-09-03</lastmod>
+    <lastmod>2026-09-07</lastmod>
     <xhtml:link rel="alternate" hreflang="ja" href="https://stellars-lab.com/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://stellars-lab.com/en"/>
     <changefreq>monthly</changefreq>
@@ -151,6 +151,20 @@
     <lastmod>2026-08-14</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
+  </url>
+
+  <url>
+    <loc>https://stellars-lab.com/blog</loc>
+    <lastmod>2026-09-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://stellars-lab.com/blog/silent-failure</loc>
+    <lastmod>2026-09-07</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
   </url>
 
 </urlset>
