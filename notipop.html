@@ -142,6 +142,12 @@
       font-size: 14px;
       color: var(--muted);
     }
+
+    /* 読み物セクション用。app-page.css の .prose と同値（このページは style.css のみ読み込むため個別定義） */
+    .prose p { font-size: 15px; color: var(--muted); line-height: 1.9; margin-bottom: 18px; }
+    .prose p:last-child { margin-bottom: 0; }
+    .prose strong { color: var(--text); font-weight: 600; }
+
   </style>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6278805058746304" crossorigin="anonymous"></script>
 <link rel="alternate" hreflang="ja" href="https://stellars-lab.com/notipop">
@@ -229,6 +235,47 @@
       </div>
     </div>
 
+  </div>
+</section>
+
+<!-- ===== Why ===== -->
+<section class="section">
+  <p class="section-label">Why</p>
+  <h2>「あとで読む」が読まれない理由</h2>
+  <div class="prose">
+    <p>
+      ブックマークと「あとで読む」に、何百件と溜めたことがあります。
+      整理はしてあって、フォルダも分かれている。それでも、開き直した記憶がほとんどありません。
+    </p>
+    <p>
+      理由を考えて、ひとつ思い当たりました。保存していたのは<strong>ページ</strong>であって、
+      自分が反応した箇所ではなかったからです。あとで開くと、記事はたしかにそこにある。
+      けれど、どの一行で手が止まったのかは残っていない。結局もう一度、上から読む羽目になります。
+      読み返すコストが初回とほとんど変わらないなら、開かないほうが自然でした。
+    </p>
+    <p>
+      それなら、保存の単位を小さくすればいい。ページごとではなく、心が動いた三行だけを取っておく。
+      あとで見返したときに<strong>読み直す作業が発生しない</strong>状態で残っていれば、そこから先に進めます。
+      引用は短いほど、後の自分が助かります。
+    </p>
+    <p>
+      余裕があるときは、保存する瞬間に一言だけ足しておくと効きます。
+      「これは反論に使える」「この数字が意外だった」——十字程度で十分です。
+      その一言は内容の要約ではなく<strong>自分がなぜ反応したかの記録</strong>なので、
+      あとから読むと当時の関心がそのまま戻ってきます。
+      要約はあとからでも作れますが、そのときの温度は、その場でしか書けません。
+    </p>
+    <p>
+      もうひとつは、受け皿をひとつに決めることです。
+      ブラウザのブックマーク、スマホのメモ帳、自分宛のチャット。置き場所が三つに散った時点で、
+      人は探すのをやめます。探す先が一箇所しかない状態にしておくと、
+      「たしかどこかに書いた」が「あそこを見ればある」に変わります。
+      道具は Notion でなくても構いません。決めておくことのほうが本体です。
+    </p>
+    <p>
+      Notipop は、この二つ——<strong>単位を小さく、受け皿をひとつに</strong>——をそのまま形にした拡張機能です。
+      選んだ範囲だけを、いつも同じ場所へ送ります。
+    </p>
   </div>
 </section>
 

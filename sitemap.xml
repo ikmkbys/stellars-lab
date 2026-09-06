@@ -140,27 +140,6 @@
   </url>
 
   <url>
-    <loc>https://stellars-lab.com/game</loc>
-    <lastmod>2026-08-14</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://stellars-lab.com/2048</loc>
-    <lastmod>2026-08-14</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://stellars-lab.com/codebreaker</loc>
-    <lastmod>2026-08-14</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
     <loc>https://stellars-lab.com/privacy</loc>
     <lastmod>2026-08-14</lastmod>
     <changefreq>yearly</changefreq>
