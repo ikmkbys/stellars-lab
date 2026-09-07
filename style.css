@@ -388,6 +388,16 @@ footer {
   margin-bottom: 28px;
 }
 
+
+/* Writing 内の中見出し（ブログ／note の区切り）。値は .product-card h3 に合わせている */
+.subsection-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  margin: 44px 0 18px;
+}
+.subsection-title:first-of-type { margin-top: 0; }
+
 /* ===== What's New ===== */
 .news-list {
   display: flex;
