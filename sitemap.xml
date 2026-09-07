@@ -13,7 +13,7 @@
 
   <url>
     <loc>https://stellars-lab.com/en</loc>
-    <lastmod>2026-09-03</lastmod>
+    <lastmod>2026-09-08</lastmod>
     <xhtml:link rel="alternate" hreflang="ja" href="https://stellars-lab.com/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://stellars-lab.com/en"/>
     <changefreq>monthly</changefreq>
@@ -130,6 +130,20 @@
     <lastmod>2026-08-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://stellars-lab.com/en/privacy</loc>
+    <lastmod>2026-08-14</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+  <url>
+    <loc>https://stellars-lab.com/en/terms</loc>
+    <lastmod>2026-08-14</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
   </url>
 
   <url>
