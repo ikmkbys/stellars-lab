@@ -795,3 +795,37 @@ html.lenis { scroll-behavior: auto; }
   header.nav-open .nav-burger span:nth-child(2) { opacity: 0; }
   header.nav-open .nav-burger span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 }
+
+/* ===== What's New の折り畳み ===== */
+/* 件数ではなく nth-child で畳むので、新しい項目を足しても勝手に7件へ収まる。
+   JSは使わず、中身はHTMLに残るため検索エンジンからは全件見える。 */
+.news-fold {
+  position: absolute;
+  width: 1px; height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+.news-fold:not(:checked) ~ .news-list .news-item:nth-child(n+8) { display: none; }
+
+.news-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 20px;
+  padding: 9px 18px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 12px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  user-select: none;
+  transition: color .2s, border-color .2s;
+}
+.news-more:hover { color: var(--text); border-color: var(--gold); }
+.news-more::after { content: "▾"; font-size: 10px; }
+.news-fold:checked ~ .news-more::after { content: "▴"; }
+.news-fold:checked ~ .news-more .news-more-open { display: none; }
+.news-fold:not(:checked) ~ .news-more .news-more-close { display: none; }
+/* 入力欄自体は見えないので、キーボードでの現在位置はラベル側に出す */
+.news-fold:focus-visible ~ .news-more { outline: 2px solid var(--gold); outline-offset: 3px; }
