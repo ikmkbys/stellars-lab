@@ -829,3 +829,43 @@ html.lenis { scroll-behavior: auto; }
 .news-fold:not(:checked) ~ .news-more .news-more-close { display: none; }
 /* 入力欄自体は見えないので、キーボードでの現在位置はラベル側に出す */
 .news-fold:focus-visible ~ .news-more { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+/* ===== ツールのジャンル絞り込み（tools.html）とトップのジャンル導線 ===== */
+.tag-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 32px 0 20px;
+}
+.tag-filter[hidden] { display: none; }  /* JSが動くまで出さない（押しても効かないボタンを見せない） */
+
+.tag-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: none;
+  color: var(--muted);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  transition: color .2s, border-color .2s, background .2s;
+}
+.tag-chip:hover { color: var(--text); border-color: var(--gold); text-decoration: none; }
+.tag-chip[aria-pressed="true"] { color: var(--gold); border-color: var(--gold); background: var(--gold-soft); }
+.tag-chip:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+.tag-chip-count { font-size: 11px; opacity: .7; font-variant-numeric: tabular-nums; }
+
+.tools-list .tool-card[hidden] { display: none; }  /* .tool-card の display:flex が hidden属性に勝つため */
+
+.tool-genres {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 28px;
+}
+.tool-genres-label { font-size: 12px; color: var(--muted); letter-spacing: 1px; margin-right: 4px; }
