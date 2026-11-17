@@ -109,6 +109,13 @@
   </url>
 
   <url>
+    <loc>https://stellars-lab.com/beacon</loc>
+    <lastmod>2026-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
     <loc>https://stellars-lab.com/near-stars</loc>
     <lastmod>2026-09-03</lastmod>
     <changefreq>monthly</changefreq>
